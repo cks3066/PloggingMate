@@ -29,7 +29,9 @@ function Jumbotron() {
           {data.map((item, index) => {
             return (
               <SwiperSlide>
-                <Card>{index + 1}번 슬라이드</Card>
+                <Card>
+                  <img src={item.img} alt="Slider Image" />
+                </Card>
               </SwiperSlide>
             );
           })}

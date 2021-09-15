@@ -18,7 +18,16 @@ $color-main: #3fc556;
       width: 800px;
       object-fit: cover;
       img {
+        width: 798px;
+        height: 395px;
+        border-radius: 10px;
+      }
+
+      @media screen and (max-width: 768px) {
         width: 500px;
+        img {
+          width: 498px;
+        }
       }
     }
   }

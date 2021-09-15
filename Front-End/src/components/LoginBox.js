@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import "../scss/LoginBox.scss";
 
 function LoginBox() {
-  let [login, setLogin] = useState(true);
+  let [login, setLogin] = useState(false);
 
   return (
     <React.Fragment>
@@ -12,7 +12,7 @@ function LoginBox() {
           <div className="userbox">
             <p>
               <strong>userName님</strong> <br />
-              안녕하세요!
+              안녕하세요!😀
             </p>
             <div className="btn-container">
               <Link to="/" className="link btn to-mypage">

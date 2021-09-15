@@ -1,28 +1,19 @@
-import ploggingIMG from "../img/plogging.jpg";
+import ploggingIMG_1 from "../img/slideImg_1.jpg";
+import ploggingIMG_2 from "../img/slideImg_2.jpg";
+import ploggingIMG_3 from "../img/slideImg_3.jpg";
+
 
 export const data = [
   {
     id: 0,
-    img: ploggingIMG,
-    content: "플로깅이란?",
-    link: "",
+    img: ploggingIMG_1,
   },
   {
     id: 1,
-    img: ploggingIMG,
-    content: "지금 핫한 챌린지들 알아보러 가기",
-    link: "",
+    img: ploggingIMG_2,
   },
   {
     id: 2,
-    img: ploggingIMG,
-    content: "내 주변 공원 찾기",
-    link: "",
-  },
-  {
-    id: 3,
-    img: ploggingIMG,
-    content: "3번째 슬라이드",
-    link: "",
+    img: ploggingIMG_3,
   },
 ];
