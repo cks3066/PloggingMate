@@ -4,6 +4,7 @@ import Modal from "../elements/Modal";
 import PrivacyPolicy from "../elements/PrivacyPolicy";
 import { useDispatch } from "react-redux";
 import { actionCreators as userActions } from "../redux/modules/user";
+import { withRouter } from "react-router";
 
 const SignUp = (props) => {
   const dispatch = useDispatch();
@@ -41,7 +42,7 @@ const SignUp = (props) => {
           else if (pwd !== pwdCheck) {
             window.alert("비밀번호 확인이 틀렸습니다.");
           } else {
-            dispatch(userActions.signup(id, nickname, pwd, address));
+            dispatch(userActions.signup(id, nickname, pwd, address, props.history));
           }
         }}
       >
@@ -137,7 +138,7 @@ const SignUp = (props) => {
   );
 };
 
-export default SignUp;
+export default withRouter(SignUp);
 
 const Form = styled.form`
   display: flex;

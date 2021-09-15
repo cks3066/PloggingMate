@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useDispatch } from "react-redux";
 import { actionCreators as userActions } from "../redux/modules/user";
 import { Link } from "react-router-dom";
+import { withRouter } from "react-router";
 
 const Login = (props) => {
   const dispatch = useDispatch();
@@ -20,7 +21,8 @@ const Login = (props) => {
         <Form
           onSubmit={(e) => {
             e.preventDefault();
-            dispatch(userActions.login(id, pwd));
+
+            dispatch(userActions.login(id, pwd, props.history));
           }}
         >
           <Input
@@ -71,7 +73,7 @@ const Login = (props) => {
   );
 };
 
-export default Login;
+export default withRouter(Login);
 
 const Form = styled.form`
   display: flex;

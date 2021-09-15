@@ -1,7 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 import Modal_Post from "../elements/Modal_Post";
+import { useHistory } from "react-router-dom";
+
 const PostDetail = (props) => {
+  const history = useHistory();
   const postData = props.location.state.props;
   const [modalVisible, setModalVisible] = React.useState(true);
   const openModal = () => {
@@ -9,6 +12,7 @@ const PostDetail = (props) => {
   };
   const closeModal = () => {
     setModalVisible(false);
+    history.push('/postlist');
   };
 
   console.log(postData);
@@ -16,6 +20,7 @@ const PostDetail = (props) => {
   return (
     <Container>
       {modalVisible && (
+        // eslint-disable-next-line react/jsx-pascal-case
         <Modal_Post
           visible={modalVisible}
           maskClosable={true}
@@ -26,6 +31,10 @@ const PostDetail = (props) => {
             <Title>{postData.contents}</Title>
             <Position>위치 : {postData.position}</Position>
             <Date>일정 : {postData.date}</Date>
+            <Line />
+            <Participant>참여자 3/5</Participant>
+            <Position>on_schan, onsky, onstar</Position>
+            <Participation>참여하기</Participation>
           </Content>
         </Modal_Post>
       )}
@@ -60,6 +69,7 @@ const Img = styled.img`
 
 const Title = styled.h2`
   text-align: left;
+  margin-bottom: 5px;
   border-bottom: 1px solid #8f8f8f;
   padding-bottom: 20px;
 `;
@@ -77,3 +87,17 @@ const Content = styled.div`
   align-content: center;
   color: #535c68;
 `;
+
+const Line = styled.div`
+  padding-top: 10px;
+  border-bottom: 1px solid #8f8f8f;
+`;
+
+const Participant = styled.h4`
+  font-size: 18px;
+  text-align: left;
+`;
+
+const Participation = styled.button`
+  
+`

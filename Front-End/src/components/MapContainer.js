@@ -48,8 +48,8 @@ const MapContainer = ({ searchPlace }) => {
         console.log(typeof place);
         infowindow.setContent(
           '<div style="padding:5px;font-size:12px;">' +
-            place.place_name +
-            "</div>"
+          place.place_name +
+          "</div>"
         );
         infowindow.open(map, marker);
       });
@@ -89,8 +89,8 @@ const MapContainer = ({ searchPlace }) => {
         if (status === kakao.maps.services.Status.OK) {
           let detailAddr = !!result[0].road_address
             ? "<div>도로명주소 : " +
-              result[0].road_address.address_name +
-              "</div>"
+            result[0].road_address.address_name +
+            "</div>"
             : "";
           detailAddr +=
             "<div>지번 주소 : " + result[0].address.address_name + "</div>";
@@ -135,7 +135,7 @@ const MapContainer = ({ searchPlace }) => {
               result[i].address_name.trim() !== "" ||
               result[i].address_name !== null
             ) {
-              infoDiv.innerHTML = result[i].address_name;
+              infoDiv.innerText = result[i].address_name;
               break;
             }
           }

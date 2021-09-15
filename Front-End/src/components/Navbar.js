@@ -3,9 +3,13 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import "../scss/Navbar.scss";
+import { withRouter } from "react-router"
+import { useDispatch, useSelector } from "react-redux";
+import { actionCreators as userActions } from "../redux/modules/user";
 
 function Navbar({ history }) {
-  const [isLogin, setIsLogin] = useState(false);
+  const dispatch = useDispatch();
+  const isLogin = useSelector(state => state.user.is_login);
 
   const onClick = (e) => {
     document.querySelectorAll(".tab-item").forEach((el) => {
@@ -15,11 +19,6 @@ function Navbar({ history }) {
     });
 
     if (e.target.className !== "logo") e.target.classList.add("active");
-  };
-
-  const logout = () => {
-    setIsLogin(false);
-    //history push home ?
   };
 
   return (
@@ -40,7 +39,9 @@ function Navbar({ history }) {
               Park
             </Link>
             {isLogin ? (
-              <Link to="/logout" className="tab-item" onClick={logout}>
+              <Link to="/" className="tab-item" onClick={() => {
+                dispatch(userActions.logOut())
+              }}>
                 Logout
               </Link>
             ) : (
@@ -97,4 +98,4 @@ const Tab = styled.div`
   justify-content: flex-end;
 `;
 
-export default Navbar;
+export default withRouter(Navbar);

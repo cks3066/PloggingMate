@@ -15,7 +15,6 @@ import PostDetail from "./pages/PostDetail";
 import CheckLogin from "./shared/CheckLogin";
 
 function App() {
-
   return (
     <div className="App">
       <BrowserRouter>

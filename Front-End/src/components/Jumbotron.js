@@ -12,8 +12,6 @@ import "swiper/swiper-bundle.css";
 SwiperCore.use([Navigation, Pagination, Autoplay]);
 
 function Jumbotron() {
-  console.log(data);
-
   return (
     <React.Fragment>
       <Container>
@@ -24,7 +22,6 @@ function Jumbotron() {
           navigation
           centeredSlides={true}
           loop={true}
-          onInit={(swiper) => console.log(swiper)}
           autoplay={{ delay: 5000, disableOnInteraction: false }}
         >
           {data.map((item, index) => {

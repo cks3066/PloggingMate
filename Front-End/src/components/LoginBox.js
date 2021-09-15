@@ -1,9 +1,24 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "../scss/LoginBox.scss";
+import { useSelector } from "react-redux";
+import axios from "axios";
 
 function LoginBox() {
-  let [login, setLogin] = useState(false);
+  const login = useSelector(state => state.user.is_login);
+  const [nickname, setNickname] = useState("");
+
+  if (login) {
+    axios.get("http://localhost:8080/app/accounts/auth", {
+      headers: {
+        "X-ACCESS-TOKEN": sessionStorage.getItem("JWT")
+      }
+    }).then(res => {
+      setNickname(res.data.result.nickname)
+    }).catch(error => {
+      console.log(error.response.data)
+    })
+  }
 
   return (
     <React.Fragment>
@@ -11,7 +26,7 @@ function LoginBox() {
         {login ? (
           <div className="userbox">
             <p>
-              <strong>userName님</strong> <br />
+              <strong>{nickname}님</strong> <br />
               안녕하세요!😀
             </p>
             <div className="btn-container">
