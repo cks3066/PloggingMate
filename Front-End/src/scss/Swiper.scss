@@ -1,9 +1,13 @@
 $color-main: #3fc556;
 
-.swiper-container {
+@mixin alignCenter() {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.swiper-container {
+  @include alignCenter();
   border: 1px solid #d3d3d3;
   border-radius: 10px;
 
@@ -12,15 +16,18 @@ $color-main: #3fc556;
     right: 0;
     margin: 0 auto;
     .swiper-slide {
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      @include alignCenter();
       width: 800px;
       object-fit: cover;
+
       img {
         width: 798px;
-        height: 395px;
+        height: 400px;
         border-radius: 10px;
+      }
+
+      p {
+        color: #d3d3d3;
       }
 
       @media screen and (max-width: 768px) {
@@ -36,12 +43,13 @@ $color-main: #3fc556;
   .swiper-button-prev::after {
     position: absolute;
     color: $color-main;
+    font-size: 3rem;
   }
   .swiper-button-next::after {
-    left: 15px;
+    left: 10px;
   }
 
   .swiper-button-prev::after {
-    right: 15px;
+    right: 10px;
   }
 }

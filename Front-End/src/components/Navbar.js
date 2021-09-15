@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import "../scss/Navbar.scss";
 
-function Navbar() {
+function Navbar({ history }) {
+  const [isLogin, setIsLogin] = useState(false);
+
   const onClick = (e) => {
     document.querySelectorAll(".tab-item").forEach((el) => {
       if (el.classList.contains("active")) {
@@ -13,6 +15,11 @@ function Navbar() {
     });
 
     if (e.target.className !== "logo") e.target.classList.add("active");
+  };
+
+  const logout = () => {
+    setIsLogin(false);
+    //history push home ?
   };
 
   return (
@@ -32,12 +39,20 @@ function Navbar() {
             <Link to="/Park" className="tab-item" onClick={onClick}>
               Park
             </Link>
-            <Link to="/signup" className="tab-item" onClick={onClick}>
-              Sign Up
-            </Link>
-            <Link to="/login" className="tab-item" onClick={onClick}>
-              Login
-            </Link>
+            {isLogin ? (
+              <Link to="/logout" className="tab-item" onClick={logout}>
+                Logout
+              </Link>
+            ) : (
+              <>
+                <Link to="/signup" className="tab-item" onClick={onClick}>
+                  Sign Up
+                </Link>
+                <Link to="/login" className="tab-item" onClick={onClick}>
+                  Login
+                </Link>
+              </>
+            )}
           </Tab>
         </NavbarItems>
       </NormalNav>

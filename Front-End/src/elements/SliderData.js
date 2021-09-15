@@ -1,6 +1,12 @@
 import ploggingIMG_1 from "../img/slideImg_1.jpg";
 import ploggingIMG_2 from "../img/slideImg_2.jpg";
 import ploggingIMG_3 from "../img/slideImg_3.jpg";
+<<<<<<< HEAD
+=======
+import ploggingIMG_4 from "../img/slideImg_4.jpg";
+import ploggingIMG_5 from "../img/slideImg_5.jpg";
+import ploggingIMG_6 from "../img/slideImg_6.jpg";
+>>>>>>> 3f3634a9affe24c47501fbbbda506eb8cfd15c3d
 
 
 export const data = [
@@ -15,5 +21,20 @@ export const data = [
   {
     id: 2,
     img: ploggingIMG_3,
+<<<<<<< HEAD
+=======
+  },
+  {
+    id: 3,
+    img: ploggingIMG_4,
+  },
+  {
+    id: 4,
+    img: ploggingIMG_5,
+  },
+  {
+    id: 5,
+    img: ploggingIMG_6,
+>>>>>>> 3f3634a9affe24c47501fbbbda506eb8cfd15c3d
   },
 ];

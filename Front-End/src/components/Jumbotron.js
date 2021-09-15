@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 import { data } from "../elements/SliderData";
 
@@ -28,15 +29,18 @@ function Jumbotron() {
         >
           {data.map((item, index) => {
             return (
-              <SwiperSlide>
-                <Card>
-                  <img src={item.img} alt="Slider Image" />
-                </Card>
-              </SwiperSlide>
+              <>
+                <SwiperSlide>
+                  <Link to="/postlist">
+                    <img src={item.img} alt="Slider Image" />
+                  </Link>
+                </SwiperSlide>
+              </>
             );
           })}
         </Swiper>
       </Container>
+      <p>슬라이드를 누르시면 챌린지로 이동합니다.</p>
     </React.Fragment>
   );
 }
@@ -49,13 +53,6 @@ const Container = styled.div`
   @media screen and (max-width: 768px) {
     width: 500px;
   }
-`;
-
-const Card = styled.div`
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 `;
 
 export default Jumbotron;

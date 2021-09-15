@@ -1,7 +1,47 @@
-.map-container {
-  #map {
-    border-radius: 10px;
-    width: 600px;
-    height: 450px;
+$color-main: #3fc556;
+
+.park-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  h1 {
+    color: $color-main;
+  }
+
+  h4 {
+    color: #777;
+    font-weight: normal;
+  }
+  .inputform {
+    display: flex;
+    align-items: center;
+
+    input {
+      margin: 0 5px;
+      border-radius: 10px;
+      padding: 1rem 2rem;
+      outline: none;
+      transition: 0.2s;
+      border: 1px solid #d3d3d3;
+      &:focus {
+        border: 1px solid $color-main;
+      }
+    }
+    button {
+      outline: none;
+      border: 1px solid #d3d3d3;
+      padding: 0.7rem;
+      border-radius: 10px;
+
+      cursor: pointer;
+      color: $color-main;
+      background-color: #fff;
+      transition: 0.2s;
+      &:hover {
+        background-color: $color-main;
+        color: #fff;
+      }
+    }
   }
 }

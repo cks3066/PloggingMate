@@ -1,80 +1,48 @@
-/*global kakao*/
-
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import "../scss/Park.scss";
 
+import SearchIcon from "@material-ui/icons/Search";
+
+import MapContainer from "../components/MapContainer";
+
+const { kakao } = window;
+
 function Park() {
-  useEffect(() => {
-    let container = document.getElementById("map");
-    let options = {
-      center: new kakao.maps.LatLng(37.365264512305174, 127.10676860117488),
-      level: 3,
-    };
-    let map = new kakao.maps.Map(container, options);
+  const [inputText, setInputText] = useState("");
+  const [place, setPlace] = useState("");
+  const msg = document.querySelector(".message");
 
-    let markerPosition = new kakao.maps.LatLng(
-      37.365264512305174,
-      127.10676860117488
-    );
-    let marker = new kakao.maps.Marker({
-      position: markerPosition,
-    });
-    marker.setMap(map);
-    let geocoder = new kakao.maps.services.Geocoder();
+  const onChange = (e) => {
+    setInputText(e.target.value);
+  };
 
-    // let marker = new kakao.maps.Marker();
-    // let infowindow = new kakao.maps.InfoWindow({ zindex: 1 });
-
-    // kakao.maps.event.addEventListener(map, "click", (mouseEvent) => {
-    //   searchDetailAddrFromCoords(mouseEvent.latLng, (result, status) => {
-    //     if (status === kakao.maps.services.Status.OK) {
-    //       let detailAddr = !!result[0].road_adrress
-    //         ? "<div>도로명주소 : " +
-    //           result[0].road_adrress.address_name +
-    //           "</div>"
-    //         : "";
-    //       let content =
-    //         '<div className="bAddr">' +
-    //         '<span className="title">법정동 주소정보</span>' +
-    //         detailAddr +
-    //         "</div>";
-
-    //       marker.setPosition(mouseEvent.latLng);
-    //       marker.setMap(map);
-
-    //       infowindow.setContent(content);
-    //       infowindow.open(map, marker);
-    //     }
-    //   });
-    // });
-
-    // function searchAddrFromCoords(coords, callback) {
-    //   geocoder.coor2dRegionCode(coords.getLng(), coords.getLat(), callback);
-    // }
-
-    // function searchDetailAddrFromCoords(coords, callback) {
-    //   geocoder.coor2dAddress(coords.getLng(), coords.getLat(), callback);
-    // }
-
-    // function displayCenterInfo(result, status) {
-    //   if (status === kakao.maps.services.Status.OK) {
-    //     let infoDiv = document.getElementById("centerAddr");
-
-    //     for (let i = 0; i < result.length; i++) {
-    //       if (result[i].region_type === "H") {
-    //         infoDiv.innerHTML = result[i].address_name;
-    //         break;
-    //       }
-    //     }
-    //   }
-    // }
-  });
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (inputText.trim() !== "")
+      msg.innerHTML = `<strong>${inputText}</strong>에 대한 검색 결과입니다`;
+    setPlace(inputText + " 공원");
+    setInputText("");
+  };
 
   return (
     <React.Fragment>
-      <div className="map-container">
-        <div id="map"></div>
+      <div className="park-container">
+        <h1>근처 공원을 검색해보세요!</h1>
+        <h4>지역 이름까지만 검색해주세요 ex) 노원구 공원 : 노원구</h4>
+        <form className="inputform" onSubmit={handleSubmit}>
+          <input
+            type="text"
+            placeholder="Search Place..."
+            onChange={onChange}
+            value={inputText}
+          />
+          <button type="submit">
+            <SearchIcon></SearchIcon>
+          </button>
+        </form>
+        <p className="message"></p>
+        <MapContainer searchPlace={place} />
       </div>
     </React.Fragment>
   );

@@ -40,6 +40,9 @@ const Section = styled.section`
   flex-wrap: wrap;
   /* justify-content: space-between; */
   margin-top: 40px;
+  @media screen and (max-width: 768px) {
+    flex-direction: column-reverse;
+  }
 `;
 
 export default Home;
