@@ -1,20 +1,26 @@
 import { createAction, createReducer } from "@reduxjs/toolkit";
 import axios from "axios";
-import { useHistory } from "react-router-dom";
 
 const initialState = {
   is_login: false,
+  jwt: null,
+  user: {
+    uid: null,
+    email: "",
+    address: "",
+    nickname: "",
+  }
 };
 
 // 액션
 const LOG_OUT = "user/LOG_OUT";
-const GET_USER = "user/GET_USER";
 const SET_USER = "user/SET_USER";
+const SET_LOGIN = "user/SET_LOGIN";
 
 // 액션 크리에이터
 const logOut = createAction(LOG_OUT);
-const getUser = createAction(GET_USER);
 const setUser = createAction(SET_USER);
+const setLogin = createAction(SET_LOGIN);
 
 // thunk middleware- 함수형 액션
 const login = (id, pwd, history) => {
@@ -23,14 +29,21 @@ const login = (id, pwd, history) => {
       email: id,
       password: pwd
     }).then(res => {
-      sessionStorage.setItem("JWT", res.data.result.jwt);
-      window.alert("로그인 성공");
-      dispatch(setUser());
-      history.push('/');
+      dispatch(setLogin({ jwt: res.data.result.jwt }));
     }).catch(error => {
       window.alert(error.response.data.message)
+    }).then(() => {
+      axios.get("http://localhost:8080/app/accounts/auth", {
+        headers: {
+          "X-ACCESS-TOKEN": getState().user.jwt
+        }
+      }).then(res => {
+        dispatch(setUser(res.data.result));
+      }).catch(error => {
+        console.log(error.reponse.data.message)
+      }).then(() => { history.push('/') })
     })
-  };
+  }
 };
 
 const signup = (id, nickname, pwd, address, history) => {
@@ -55,13 +68,26 @@ const signup = (id, nickname, pwd, address, history) => {
 
 // 리듀서
 export default createReducer(initialState, {
-  [GET_USER]: (state, action) => { },
-  [SET_USER]: (state, action) => {
+  [SET_LOGIN]: (state, action) => {
     state.is_login = true;
+    state.jwt = action.payload.jwt;
+  },
+  [SET_USER]: (state, action) => {
+    const userData = action.payload;
+    state.user.uid = userData.accountId;
+    state.user.email = userData.email;
+    state.user.address = userData.address;
+    state.user.nickname = userData.nickname;
   },
   [LOG_OUT]: (state, action) => {
     state.is_login = false;
-    sessionStorage.removeItem("JWT");
+    state.jwt = null;
+    state.user = {
+      uid: null,
+      email: "",
+      address: "",
+      nickname: "",
+    }
   },
 });
 
@@ -70,7 +96,6 @@ const actionCreators = {
   login,
   signup,
   logOut,
-  setUser,
 };
 
 export { actionCreators };

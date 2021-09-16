@@ -1,74 +1,77 @@
 import React from "react";
 import styled from "styled-components";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as userActions } from "../redux/modules/user";
 import { Link } from "react-router-dom";
 import { withRouter } from "react-router";
 
-const Login = (props) => {
+const Login = ({ history }) => {
   const dispatch = useDispatch();
-
   const [id, setId] = React.useState("");
   const [pwd, setPwd] = React.useState("");
+  const is_login = useSelector(state => state.user.is_login);
 
+  if (is_login) history.goBack()
   return (
     <React.Fragment>
-      <Card>
-        <Logo>
-          <Img src={require("../img/logo.png").default} alt="logo" />
-          <LogoText> 로그인</LogoText>
-        </Logo>
-        <Form
-          onSubmit={(e) => {
-            e.preventDefault();
+      {!is_login &&
+        <Card>
+          <Logo>
+            <Img src={require("../img/logo.png").default} alt="logo" />
+            <LogoText> 로그인</LogoText>
+          </Logo>
+          <Form
+            onSubmit={(e) => {
+              e.preventDefault();
 
-            dispatch(userActions.login(id, pwd, props.history));
-          }}
-        >
-          <Input
-            required
-            type="email"
-            placeholder="아이디를 입력해주세요."
-            onChange={(e) => {
-              e.target.style.backgroundColor = "#e3f0e4";
-              if (e.target.value === "") e.target.style.backgroundColor = "white";
-              setId(e.target.value);
+              dispatch(userActions.login(id, pwd, history));
             }}
-            onFocus={(e) => {
-              e.target.placeholder = "";
-            }}
-            onBlur={(e) => {
-              e.target.placeholder = "아이디를 입력해주세요.";
-            }}
-          />
-          <Input
-            required
-            type="password"
-            placeholder="비밀번호를 입력해주세요."
-            onChange={(e) => {
-              e.target.style.backgroundColor = "#e3f0e4";
-              if (e.target.value === "") e.target.style.backgroundColor = "white";
-              setPwd(e.target.value);
-            }}
-            onFocus={(e) => {
-              e.target.placeholder = "";
-            }}
-            onBlur={(e) => {
-              e.target.placeholder = "비밀번호를 입력해주세요.";
-            }}
-          />
+          >
+            <Input
+              required
+              type="email"
+              placeholder="아이디를 입력해주세요."
+              onChange={(e) => {
+                e.target.style.backgroundColor = "#e3f0e4";
+                if (e.target.value === "") e.target.style.backgroundColor = "white";
+                setId(e.target.value);
+              }}
+              onFocus={(e) => {
+                e.target.placeholder = "";
+              }}
+              onBlur={(e) => {
+                e.target.placeholder = "아이디를 입력해주세요.";
+              }}
+            />
+            <Input
+              required
+              type="password"
+              placeholder="비밀번호를 입력해주세요."
+              onChange={(e) => {
+                e.target.style.backgroundColor = "#e3f0e4";
+                if (e.target.value === "") e.target.style.backgroundColor = "white";
+                setPwd(e.target.value);
+              }}
+              onFocus={(e) => {
+                e.target.placeholder = "";
+              }}
+              onBlur={(e) => {
+                e.target.placeholder = "비밀번호를 입력해주세요.";
+              }}
+            />
 
-          <Button>로그인</Button>
-          <ETC>
-            <Link to="/signup" className="Link_Login">
-              <Forgot>아이디/비밀번호 찾기</Forgot>
-            </Link>
-            <Link to="/signup" className="Link_Login">
-              <Signup>회원가입</Signup>
-            </Link>
-          </ETC>
-        </Form>
-      </Card>
+            <Button>로그인</Button>
+            <ETC>
+              <Link to="/signup" className="Link_Login">
+                <Forgot>아이디/비밀번호 찾기</Forgot>
+              </Link>
+              <Link to="/signup" className="Link_Login">
+                <Signup>회원가입</Signup>
+              </Link>
+            </ETC>
+          </Form>
+        </Card>
+      }
     </React.Fragment>
   );
 };

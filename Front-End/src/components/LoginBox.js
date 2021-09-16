@@ -6,27 +6,14 @@ import axios from "axios";
 
 function LoginBox() {
   const login = useSelector(state => state.user.is_login);
-  const [nickname, setNickname] = useState("");
-
-  if (login) {
-    axios.get("http://localhost:8080/app/accounts/auth", {
-      headers: {
-        "X-ACCESS-TOKEN": sessionStorage.getItem("JWT")
-      }
-    }).then(res => {
-      setNickname(res.data.result.nickname)
-    }).catch(error => {
-      console.log(error.response.data)
-    })
-  }
-
+  const user = useSelector(state => state.user.user);
   return (
     <React.Fragment>
       <div className="userbox-container">
         {login ? (
           <div className="userbox">
             <p>
-              <strong>{nickname}님</strong> <br />
+              <strong>{user.nickname}님</strong> <br />
               안녕하세요!😀
             </p>
             <div className="btn-container">

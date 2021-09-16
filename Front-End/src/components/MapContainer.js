@@ -135,7 +135,7 @@ const MapContainer = ({ searchPlace }) => {
               result[i].address_name.trim() !== "" ||
               result[i].address_name !== null
             ) {
-              infoDiv.innerText = result[i].address_name;
+              infoDiv.innerHTML = result[i].address_name;
               break;
             }
           }

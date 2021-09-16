@@ -1,44 +1,61 @@
 import React, { useState, useEffect } from "react";
 import "../scss/Dust.scss";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import user, { actionCreators as userActions } from "../redux/modules/user";
 
-function Dust() {
-  const API_KEY =
-    "AWww3bsN1Jf0BBZXWkVQG%2F%2FnC2xpn3sSDXgBJhsYdJIMVPHiScpp9jPP%2Bs8iwwZv0v9m6Rt3qW9DgK8SbHWMag%3D%3D";
-  const API_URL = `
-https://cors-anywhere.herokuapp.com/http://apis.data.go.kr/B552584/ArpltnInforInqireSvc/getMsrstnAcctoRltmMesureDnsty?stationName=종로구&dataTerm=month&pageNo=1&numOfRows=100&returnType=json&serviceKey=AWww3bsN1Jf0BBZXWkVQG%2F%2FnC2xpn3sSDXgBJhsYdJIMVPHiScpp9jPP%2Bs8iwwZv0v9m6Rt3qW9DgK8SbHWMag%3D%3D`;
-  let [dust, setDust] = useState({});
-  let [loading, setLoading] = useState(true);
+const Grade = ({ grade }) => {
+  switch (grade) {
+    case "1":
+      return <b style={{ color: "blue" }}>좋음!</b>;
+    case "2":
+      return <b style={{ color: "green" }}>보통</b>;
+    case "3":
+      return <b style={{ color: "orange" }}>나쁨!</b>;
+    case "4":
+      return <b style={{ color: "red" }}>매우 나쁨!!</b>;
+    default:
+      return;
+  }
+}
+
+const Dust = () => {
+  const dispatch = useDispatch();
+  const user = useSelector(state => state.user);
+  const [dustData, setDustData] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
+  const location = user.user.address.split(" ");
 
   useEffect(() => {
-    //getDust();
-  }, []);
-
-  const getDust = async () => {
-    // status별 error 코드 만들기
-    try {
-      console.log("axios");
-      const resp = await axios
-        .get(
-          `https://cors-anywhere.herokuapp.com/http://apis.data.go.kr/B552584/ArpltnInforInqireSvc/getMsrstnAcctoRltmMesureDnsty?stationName=종로구&dataTerm=month&pageNo=1&numOfRows=100&returnType=json&serviceKey=AWww3bsN1Jf0BBZXWkVQG%2F%2FnC2xpn3sSDXgBJhsYdJIMVPHiScpp9jPP%2Bs8iwwZv0v9m6Rt3qW9DgK8SbHWMag%3D%3D`
-        )
-        .catch((err) => {
-          console.error(err);
-        });
-      console.log(resp.data.response.body);
-
-      setLoading(false);
-    } catch (e) {
-      throw new Error(e);
+    if (user.is_login) {
+      axios.get("http://localhost:8080/app/v1/microdust", {
+        headers: {
+          "X-ACCESS-TOKEN": user.jwt
+        }
+      }).then(res => {
+        setDustData(res.data.result)
+        setIsLoading(false);
+      }).catch(error => {
+        console.log(error.response.data)
+      })
     }
-  };
+  }, [])
 
   return (
     <React.Fragment>
       <div className="dust-container">
-        {loading ? <p>loading</p> : <p>complete</p>}
+        {isLoading || !user.is_login ? <p>loading</p> : (
+          <div>
+            <p>{location[0] + ' ' + location[1]}의 미세먼지 정보 : </p>
+            <p>측정일시 : {dustData.dataTime}</p>
+            <p>통합대기환경수치 :<Grade grade={dustData.khaiGrade} /> </p>
+            <p>통합대시환경지수 : {dustData.khaiValue}</p>
+            <p>미세먼지 등급 : <Grade grade={dustData.pm10Grade} /></p>
+            <p>미세먼지 농도 : {dustData.pm10Value}</p>
+          </div>
+        )}
       </div>
-    </React.Fragment>
+    </React.Fragment >
   );
 }
 
