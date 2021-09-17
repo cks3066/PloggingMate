@@ -3,6 +3,7 @@ import logger from "redux-logger";
 import thunk from "redux-thunk";
 import test from "./modules/test";
 import user from "./modules/user";
+import img from "./modules/img";
 import { persistReducer } from 'redux-persist';
 import storage from "redux-persist/lib/storage";
 import { combineReducers } from 'redux';
@@ -11,6 +12,7 @@ import { combineReducers } from 'redux';
 const rootReducer = combineReducers({
   test,
   user,
+  img,
 });
 
 // redux-persist

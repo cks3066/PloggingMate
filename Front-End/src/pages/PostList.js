@@ -3,6 +3,7 @@ import Post from "../components/Post";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import Modal from "../elements/Modal";
+import { useDispatch, useSelector } from "react-redux";
 
 const 총게시물 = 26;
 const post = [
@@ -11,6 +12,7 @@ const post = [
 ];
 
 const PostList = (props) => {
+  const is_login = useSelector((state) => state.user.is_login);
   const [showNum, setShowNum] = React.useState(12);
   const [showNum_complete, setShowNum_complete] = React.useState(8);
   const [modalVisible, setModalVisible] = React.useState(false);
@@ -69,9 +71,10 @@ const PostList = (props) => {
       </SubTitle>
       <Posts>
         <PostsElm>
-          <Link to="/login" className="Link_PostWrtie">
-            게시물 작성
-          </Link>
+          {is_login &&
+            <Link to="/postwrite" className="Link_PostWrtie">
+              새 게시물 작성
+            </Link>}
         </PostsElm>
         {rendering()}
         <Button onClick={clickMore}>더보기</Button>

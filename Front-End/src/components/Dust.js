@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import "../scss/Dust.scss";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import user, { actionCreators as userActions } from "../redux/modules/user";
 
 const Grade = ({ grade }) => {
   switch (grade) {

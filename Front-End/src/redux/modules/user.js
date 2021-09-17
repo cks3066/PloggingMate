@@ -33,6 +33,7 @@ const login = (id, pwd, history) => {
     }).catch(error => {
       window.alert(error.response.data.message)
     }).then(() => {
+      if (getState().user.jwt === null) return;
       axios.get("http://localhost:8080/app/accounts/auth", {
         headers: {
           "X-ACCESS-TOKEN": getState().user.jwt
@@ -40,8 +41,8 @@ const login = (id, pwd, history) => {
       }).then(res => {
         dispatch(setUser(res.data.result));
       }).catch(error => {
-        console.log(error.reponse.data.message)
-      }).then(() => { history.push('/') })
+        console.log(error);
+      }).then(() => { history.goBack() })
     })
   }
 };
