@@ -34,7 +34,7 @@ const loading = createAction(LOADING);
 
 // thunk middleware- 함수형 액션
 const thunkTest = (payload) => {
-  return function (dispatch, getState) {};
+  return function (dispatch, getState) { };
 };
 
 // 리듀서
@@ -49,7 +49,6 @@ export default createReducer(initialState, {
   },
   [EDIT_POST]: (state, action) => {
     let idx = state.list.findIndex((p) => p.id === action.payload.post_id);
-
     state.list[idx] = { ...state.list[idx], ...action.payload.post };
   },
   [LOADING]: (state, action) => {

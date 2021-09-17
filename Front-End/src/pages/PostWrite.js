@@ -4,12 +4,30 @@ import { useDispatch, useSelector } from "react-redux";
 import { withRouter } from "react-router";
 
 const PostWrite = (props) => {
+  const { daum } = window;
   const is_login = useSelector((state) => state.user.is_login);
   const user = useSelector((state => state.user.user))
   const { history } = props;
   const [title, setTitle] = React.useState('');
   const [content, setContent] = React.useState('');
+  const [address, setAddress] = React.useState('');
   const [location, setLocation] = React.useState('');
+
+  if (!is_login) {
+    window.alert("로그인 후 이용가능합니다.");
+    history.replace('/login');
+    return <></>;
+  }
+
+  const onClickAddress = () => {
+    new daum.Postcode({
+      oncomplete: function (data) {
+        setAddress(data.address);
+        setLocation(data.buildingName);
+
+      }
+    }).open();
+  }
 
   return (
     <Body>
@@ -22,12 +40,13 @@ const PostWrite = (props) => {
           <Img src="http://via.placeholder.com/400x300" alt="이미지" />
           <Container>
             <Title>
-              <Input title placeholder="타이틀을 적어주세요." onChange={(e) => setTitle(e.target.value)} maxLength="14" />
+              <Input title placeholder="* 타이틀을 적어주세요." onChange={(e) => setTitle(e.target.value)} maxLength="14" />
             </Title>
-            <NoticeText>위치 : </NoticeText>
-            <NoticeText>일정 : </NoticeText>
+            <NoticeText>위치 : <Location onClick={onClickAddress}>{address == '' ? '* 주소를 검색하려면 클릭하세요' : `${address}`}{location !== '' ? `(${location})` : null}</Location></NoticeText>
+            <Input_Location placeholder="* 상세 위치 ex) ○○공원" maxLength="14" />
+            <NoticeText>일정 : <Date type="datetime-local" /></NoticeText>
             <Line />
-            <ContentContainer> <Input_Content rows="3" placeholder="소개글을 적어주세요. (40자이내)" maxLength="40" onChange={(e) => setContent(e.target.value)} /></ContentContainer>
+            <ContentContainer> <Input_Content rows="3" placeholder="* 소개글을 적어주세요. (40자이내)" maxLength="40" onChange={(e) => setContent(e.target.value)} /></ContentContainer>
             <Warning>* 게시물에 욕설 및 비방을 포함하거나 게시물의 악용 시 삭제 조치 및 서비스 이용에 제한이 있을 수 있습니다.</Warning>
             <Participation>작성 완료</Participation>
           </Container>
@@ -147,6 +166,29 @@ color:#535c68;
   }
 `;
 
+const Input_Location = styled.input.attrs({ required: true })`
+width:80%;
+border: none;
+border-bottom : 1px solid gray;
+font-size: 16px;
+font-weight: bold;
+color:#535c68;
+margin-left : 13%;
+&::placeholder{
+    color:#8f8f8f;
+}
+&:focus{outline:none;}
+&:focus::-webkit-input-placeholder {color:transparent; }
+
+  @media screen and (max-width: 780px) {
+    font-size: 14px;
+  }
+
+  @media screen and (max-width: 650px) {
+    font-size: 12px;
+  }
+`;
+
 const Input_Content = styled.textarea.attrs({ required: true })`
 width:100%;
 border: none;
@@ -176,12 +218,31 @@ border-bottom : 1px solid #8f8f8f;
 justify-content: flex-start;
 `;
 
-const Location = styled.input`
+const Location = styled.div`
 border: none;
+color : #535c68;
+margin-left : 15px;
+font-size:15px;
+cursor: pointer;
+&:hover{
+  outline: 1px solid black;
+}
+
+@media screen and (max-width: 780px) {
+    font-size: 14px;
+  }
+
+  @media screen and (max-width: 650px) {
+    font-size: 12px;
+  }
 `;
 
 const Date = styled.input`
+margin-left:15px;
 border: none;
+font-size: 15px;
+font-weight: bold;
+&:focus{outline:1px solid #8f8f8f}
 `;
 
 const GoBack = styled.button`
@@ -201,7 +262,6 @@ cursor: pointer;
     background-color: #babcc0;
 }
 `;
-export default withRouter(PostWrite);
 
 const Line = styled.div`
   border-bottom: 1px solid #8f8f8f;
@@ -234,7 +294,9 @@ const Participation = styled.button`
 `
 
 const Warning = styled.b`
-color : #8f8f8f;
+color : #bdbdbd;
 font-size: 13px;
 margin: 5% 0px 5px 0px;
 `;
+
+export default withRouter(PostWrite);

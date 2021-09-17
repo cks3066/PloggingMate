@@ -42,7 +42,7 @@ const login = (id, pwd, history) => {
         dispatch(setUser(res.data.result));
       }).catch(error => {
         console.log(error);
-      }).then(() => { history.goBack() })
+      }).then(() => { history.replace('/') })
     })
   }
 };
