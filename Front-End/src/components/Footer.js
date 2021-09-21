@@ -13,7 +13,7 @@ function Footer() {
 }
 
 const CopyRight = styled.div`
-  z-index: 10;
+  z-index: 9;
   position: absolute;
   display: flex;
   color: #333;
@@ -23,7 +23,6 @@ const CopyRight = styled.div`
   height: 50px;
   justify-content: center;
   align-items: center;
-  border-top: 1px solid #d3d3d3;
   padding: 10px 0;
   background-color: white;
 `;

@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+import static KBChallenge.BackEnd.PloggingMate.configure.entity.Status.*;
 import static javax.persistence.EnumType.*;
 import static javax.persistence.FetchType.*;
 
@@ -34,4 +35,16 @@ public class AccountPostRelation extends BaseTimeEntity {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "postId")
     private Post post;
+
+    public void toggleIsLike() {
+        this.isLike = !this.isLike;
+    }
+
+
+    public AccountPostRelation(Account account, Post post){
+        this.status = VALID;
+        this.isLike = true;
+        this.account = account;
+        this.post = post;
+    }
 }

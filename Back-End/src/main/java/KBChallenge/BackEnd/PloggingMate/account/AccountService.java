@@ -8,6 +8,7 @@ import KBChallenge.BackEnd.PloggingMate.configure.response.exception.CustomExcep
 import KBChallenge.BackEnd.PloggingMate.configure.response.exception.CustomExceptionStatus;
 import KBChallenge.BackEnd.PloggingMate.configure.security.authentication.CustomUserDetails;
 import KBChallenge.BackEnd.PloggingMate.configure.security.jwt.JwtTokenProvider;
+import KBChallenge.BackEnd.PloggingMate.util.location.NaverGeocode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -24,11 +25,14 @@ public class AccountService {
     private final AccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
+    private final NaverGeocode naverGeocode;
 
     @Transactional
     public AccountAuthDto signUp(AccountAuthDto dto) {
         if (accountRepository.findByEmailAndStatus(dto.getEmail(), VALID).isPresent()) throw new CustomException(CustomExceptionStatus.DUPLICATED_EMAIL);
         if (accountRepository.findByNicknameAndStatus(dto.getNickname(), VALID).isPresent()) throw new CustomException(CustomExceptionStatus.DUPLICATED_NICKNAME);
+        naverGeocode.getCoordinate(dto.getAddress());
+
 
         dto.setPassword(passwordEncoder.encode(dto.getPassword()));
         Account account = Account.createAccount(dto);
@@ -48,6 +52,7 @@ public class AccountService {
 
         SignInRes res = SignInRes.builder()
                 .accountId(account.getAccountId())
+                .nickname(account.getNickname())
                 .jwt(jwtTokenProvider.createToken(account.getEmail(), account.getRole()))
                 .build();
 

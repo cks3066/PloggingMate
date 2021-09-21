@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="PloggingMate-testDb" uuid="f15c097c-31c1-43e4-a4db-81bba8ede0cb">
+    <data-source source="LOCAL" name="plogging-testDB" uuid="1368a022-5bd4-4ba5-890e-8f47847b7cae">
       <driver-ref>h2.unified</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.h2.Driver</jdbc-driver>
-      <jdbc-url>jdbc:h2:mem:PloggingMate-testDb</jdbc-url>
+      <jdbc-url>jdbc:h2:mem:plogging-testDB</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>

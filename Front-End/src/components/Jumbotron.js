@@ -23,13 +23,14 @@ function Jumbotron() {
           centeredSlides={true}
           loop={true}
           autoplay={{ delay: 5000, disableOnInteraction: false }}
+          key={0}
         >
           {data.map((item, index) => {
             return (
               <>
-                <SwiperSlide>
+                <SwiperSlide key={index}>
                   <Link to="/postlist">
-                    <img src={item.img} alt="Slider Image" />
+                    <img src={item.img} alt={index + 1} />
                   </Link>
                 </SwiperSlide>
               </>

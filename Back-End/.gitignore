@@ -37,3 +37,6 @@ out/
 .vscode/
 
 ### User Custom ###
+firebase-key.json
+application-key.yml
+application-prod.yml

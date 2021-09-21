@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -28,39 +29,68 @@ public class MicrodustService implements GetApiService {
     private final RestTemplate restTemplate;
     private final Gson gson;
 
+    @Value("${microdust.service.key}")
+    private String serviceKey;
+
+    @Value("${microdust.service.uri}")
+    private String serviceUri;
+
     @Autowired
     public MicrodustService(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
         this.gson = new Gson();
     }
 
-    public MicrodustDto getApi() throws Exception{
-        URI uri = getOpenUri();
-        HttpHeaders headers = new HttpHeaders();
-        HttpEntity<HttpHeaders> entity = new HttpEntity<>(headers);
-        String responseBody = restTemplate.exchange(uri, HttpMethod.GET, entity, String.class)
-                .getBody();
-        MicrodustDto microdustDto = convertToDto(responseBody);
-
-        return microdustDto;
+    public MicrodustDto getMicrodustInfo(String tmX, String tmY) throws Exception {
+        String stationName = getNearbyMeasuringStation(tmX, tmY);
+        URI callUri = getMicrodustInfoOpenUri(stationName);
+        String responseBody = getApi(callUri);
+        return convertToDto(responseBody);
     }
 
-    public URI getOpenUri() {
-        String URI = "http://apis.data.go.kr/B552584/ArpltnInforInqireSvc/getMsrstnAcctoRltmMesureDnsty";
+    private String getNearbyMeasuringStation(String tmX, String tmY) throws Exception{
+        URI callUri = getNearbyMeasuringStationOpenUri(tmX, tmY);
+        String responseBody = getApi(callUri);
+        JSONArray jsonArray = extractJsonArray(responseBody);
+        return jsonArray.getJSONObject(0).getString("stationName");
+    }
+
+    public String getApi(URI callUri) throws Exception {
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<HttpHeaders> entity = new HttpEntity<>(headers);
+        String responseBody = restTemplate.exchange(callUri, HttpMethod.GET, entity, String.class)
+                .getBody();
+        return responseBody;
+    }
+
+    private URI getNearbyMeasuringStationOpenUri(String tmX, String tmY) {
+        String URI = serviceUri + "MsrstnInfoInqireSvc/getNearbyMsrstnList";
+        UriComponents builder = UriComponentsBuilder.fromHttpUrl(URI)
+                .queryParam("serviceKey",serviceKey)
+                .queryParam("returnType","json")
+                .queryParam("tmX",tmX)
+                .queryParam("tmY",tmY)
+                .encode()
+                .build(false);
+        return builder.toUri();
+    }
+
+    private URI getMicrodustInfoOpenUri(String stationName) {
+        String URI = serviceUri + "ArpltnInforInqireSvc/getMsrstnAcctoRltmMesureDnsty";
 
         UriComponents builder = UriComponentsBuilder.fromHttpUrl(URI)
-                .queryParam("serviceKey","JHuHXKqar9eaYv37aBtxQqpUkuYut1gwR4ftzWErk5gLfiUmVviYcKt0HxtdeK3gdYwNlUZu2Td2hFB58uAgrQ==")
+                .queryParam("serviceKey",serviceKey)
                 .queryParam("returnType","json")
                 .queryParam("numOfRows",1)
                 .queryParam("pageNo",1)
-                .queryParam("stationName","종로구")
+                .queryParam("stationName",stationName)
                 .queryParam("dataTerm","DAILY")
                 .encode()
                 .build(false);
         return builder.toUri();
     }
 
-    public MicrodustDto convertToDto(String responseBody) throws IOException{
+    private MicrodustDto convertToDto(String responseBody) throws IOException{
         JSONArray array = extractJsonArray(responseBody);
 
         MicrodustDto microdustDto = null;
@@ -73,17 +103,15 @@ public class MicrodustService implements GetApiService {
         return microdustDto;
     }
 
-    public JSONArray extractJsonArray(String responseBody) {
+    private JSONArray extractJsonArray(String responseBody) {
         JSONObject jsonObject = new JSONObject(responseBody); // getbody
-
         JSONObject getObject = jsonObject.getJSONObject("response")
                 .getJSONObject("body");
-
         JSONArray array = (JSONArray) getObject.get("items");
         return array;
     }
 
-    public void validateMicrodustDto(MicrodustDto microdustDto) throws IOException{
+    private void validateMicrodustDto(MicrodustDto microdustDto) throws IOException{
         if (Objects.isNull(microdustDto)) {
             throw new IOException("Faile to convert to MicrodustDTO");
         }

@@ -13,6 +13,8 @@ public class SignInRes {
 
     private Long accountId;
 
+    private String nickname;
+
     private String jwt;
 
 }

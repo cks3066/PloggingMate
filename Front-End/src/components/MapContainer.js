@@ -1,10 +1,16 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+
+import Modal from "../elements/Modal";
 
 import "../scss/MapContainer.scss";
 
 const { kakao } = window;
 
 const MapContainer = ({ searchPlace }) => {
+  let [modalVisible, setModalVisible] = useState(false);
+  let [location, setLoctaion] = useState("");
+
   useEffect(() => {
     console.log(searchPlace);
     const container = document.getElementById("map");
@@ -43,15 +49,11 @@ const MapContainer = ({ searchPlace }) => {
         map: map,
         position: new kakao.maps.LatLng(place.y, place.x),
       });
-      kakao.maps.event.addListener(marker, "click", function (mouseEvent) {
+      kakao.maps.event.addListener(marker, "click", () => {
         // 마커를 클릭하면 장소명이 인포윈도우에 표출
-        console.log(typeof place);
-        infowindow.setContent(
-          '<div style="padding:5px;font-size:12px;">' +
-          place.place_name +
-          "</div>"
-        );
-        infowindow.open(map, marker);
+        console.log("marker click");
+        setModalVisible(true);
+        setLoctaion(place.place_name);
       });
 
       kakao.maps.event.addListener(
@@ -89,8 +91,8 @@ const MapContainer = ({ searchPlace }) => {
         if (status === kakao.maps.services.Status.OK) {
           let detailAddr = !!result[0].road_address
             ? "<div>도로명주소 : " +
-            result[0].road_address.address_name +
-            "</div>"
+              result[0].road_address.address_name +
+              "</div>"
             : "";
           detailAddr +=
             "<div>지번 주소 : " + result[0].address.address_name + "</div>";
@@ -128,13 +130,10 @@ const MapContainer = ({ searchPlace }) => {
     function displayCenterInfo(result, status) {
       if (status === kakao.maps.services.Status.OK) {
         let infoDiv = document.getElementById("centerAddr");
-        for (let i = 0; i < result.length; i++) {
-          // 행정동의 region_type 값은 'H' 이므로
-          if (result[i].region_type === "H") {
-            if (
-              result[i].address_name.trim() !== "" ||
-              result[i].address_name !== null
-            ) {
+        if (infoDiv) {
+          for (let i = 0; i < result.length; i++) {
+            // 행정동의 region_type 값은 'H' 이므로
+            if (result[i].region_type === "H") {
               infoDiv.innerHTML = result[i].address_name;
               break;
             }
@@ -147,6 +146,10 @@ const MapContainer = ({ searchPlace }) => {
     map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
   }, [searchPlace]);
 
+  function closeModal() {
+    setModalVisible(false);
+  }
+
   return (
     <div className="map-container">
       <div id="map"></div>
@@ -154,6 +157,24 @@ const MapContainer = ({ searchPlace }) => {
         <span className="title">지도중심기준 행정동 주소정보</span>
         <span id="centerAddr"></span>
       </div>
+      {modalVisible && (
+        <Modal
+          className="modal-container"
+          visible={modalVisible}
+          maskClosable={true}
+          onClose={closeModal}
+        >
+          <h1>{location}</h1>
+
+          <p>위 장소에서 플로깅을 진행하시겠어요?</p>
+          <div className="btn-container">
+            <button className="btn later" onClick={closeModal}>
+              나중에 할게요!
+            </button>
+            <button className="btn go">글 작성하기</button>
+          </div>
+        </Modal>
+      )}
     </div>
   );
 };

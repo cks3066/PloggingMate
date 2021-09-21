@@ -2,15 +2,17 @@ package KBChallenge.BackEnd.PloggingMate.park.entity;
 
 import KBChallenge.BackEnd.PloggingMate.configure.entity.BaseTimeEntity;
 import KBChallenge.BackEnd.PloggingMate.configure.entity.Status;
+import KBChallenge.BackEnd.PloggingMate.park.entity.dto.CreateParkReq;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+import static KBChallenge.BackEnd.PloggingMate.configure.entity.Status.*;
+
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 public class Park extends BaseTimeEntity {
 
@@ -21,10 +23,29 @@ public class Park extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    private String thumbnail;
+    @Column(unique = true)
+    private String name;
+
+    @Column(name = "thumbnail_uri")
+    private String thumbnailUri;
 
     private String address;
 
-    private Float rating;
+    private Double rating;
 
+    public void upRating() {
+        this.rating += 1;
+    }
+
+    protected Park(String name, String address, String thumbnailUri) {
+        this.status = VALID;
+        this.name = name;
+        this.address = address;
+        this.thumbnailUri = thumbnailUri;
+        this.rating = 0.0;
+    }
+
+    public static Park of(String name, String address, String thumbnailUri) {
+        return new Park(name, address, thumbnailUri);
+    }
 }

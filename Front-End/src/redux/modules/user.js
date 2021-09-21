@@ -9,7 +9,7 @@ const initialState = {
     email: "",
     address: "",
     nickname: "",
-  }
+  },
 };
 
 // 액션
@@ -25,45 +25,60 @@ const setLogin = createAction(SET_LOGIN);
 // thunk middleware- 함수형 액션
 const login = (id, pwd, history) => {
   return function (dispatch, getState) {
-    axios.post("http://localhost:8080/app/sign-in", {
-      email: id,
-      password: pwd
-    }).then(res => {
-      dispatch(setLogin({ jwt: res.data.result.jwt }));
-    }).catch(error => {
-      window.alert(error.response.data.message)
-    }).then(() => {
-      if (getState().user.jwt === null) return;
-      axios.get("http://localhost:8080/app/accounts/auth", {
-        headers: {
-          "X-ACCESS-TOKEN": getState().user.jwt
-        }
-      }).then(res => {
-        dispatch(setUser(res.data.result));
-      }).catch(error => {
-        console.log(error);
-      }).then(() => { history.replace('/') })
-    })
-  }
+    axios
+      .post("http://localhost:8080/app/sign-in", {
+        email: id,
+        password: pwd,
+      })
+      .then((res) => {
+        dispatch(setLogin({ jwt: res.data.result.jwt }));
+      })
+      .catch((error) => {
+        window.alert(error.response.data.message);
+      })
+      .then(() => {
+        if (getState().user.jwt === null) return;
+        axios
+          .get("http://localhost:8080/app/accounts/auth", {
+            headers: {
+              "X-ACCESS-TOKEN": getState().user.jwt,
+            },
+          })
+          .then((res) => {
+            dispatch(setUser(res.data.result));
+          })
+          .catch((error) => {
+            console.log(error);
+          })
+          .then(() => {
+            history.replace("/");
+          });
+      });
+  };
 };
 
 const signup = (id, nickname, pwd, address, history) => {
   return function (dispatch, getState) {
-    axios.post("http://localhost:8080/app/sign-up", {
-      email: id,
-      nickname: nickname,
-      password: pwd,
-      address: address
-    }).then(res => {
-      window.alert("회원가입 성공");
-      history.push('/');
-    }).catch(error => {
-      if (error.response.data.message === "닉네임 형식을 확인해주세요.") {
-        window.alert("닉네임 형식을 확인해주세요.\n닉네임은 3글자 이상, 20글자 이하이며, \n특수문자는 '_' 와 '-' 만 허용됩니다.")
-      } else {
-        window.alert(error.response.data.message)
-      }
-    })
+    axios
+      .post("http://localhost:8080/app/sign-up", {
+        email: id,
+        nickname: nickname,
+        password: pwd,
+        address: address,
+      })
+      .then((res) => {
+        window.alert("회원가입 성공");
+        history.push("/");
+      })
+      .catch((error) => {
+        if (error.response.data.message === "닉네임 형식을 확인해주세요.") {
+          window.alert(
+            "닉네임 형식을 확인해주세요.\n닉네임은 3글자 이상, 20글자 이하이며, \n특수문자는 '_' 와 '-' 만 허용됩니다."
+          );
+        } else {
+          window.alert(error.response.data.message);
+        }
+      });
   };
 };
 
@@ -88,7 +103,7 @@ export default createReducer(initialState, {
       email: "",
       address: "",
       nickname: "",
-    }
+    };
   },
 });
 

@@ -3,13 +3,13 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import "../scss/Navbar.scss";
-import { withRouter } from "react-router"
+import { withRouter } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as userActions } from "../redux/modules/user";
 
 function Navbar({ history }) {
   const dispatch = useDispatch();
-  const isLogin = useSelector(state => state.user.is_login);
+  const isLogin = useSelector((state) => state.user.is_login);
 
   const onClick = (e) => {
     document.querySelectorAll(".tab-item").forEach((el) => {
@@ -39,9 +39,13 @@ function Navbar({ history }) {
               Park
             </Link>
             {isLogin ? (
-              <Link to="/" className="tab-item" onClick={() => {
-                dispatch(userActions.logOut())
-              }}>
+              <Link
+                to="/"
+                className="tab-item"
+                onClick={() => {
+                  dispatch(userActions.logOut());
+                }}
+              >
                 Logout
               </Link>
             ) : (
@@ -62,7 +66,7 @@ function Navbar({ history }) {
 }
 
 const NormalNav = styled.nav`
-  z-index: 10;
+  z-index: 9;
   position: fixed;
   top: 0;
   font-family: inherit;

@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -24,17 +25,20 @@ class MicrodustServiceTest {
     @Autowired
     MicrodustService microdustService;
 
-    @DisplayName("미세먼지 OPEN API를 호출하여 DTO로 변환이 성공한다.")
+    @DisplayName("미세먼지 정보를 받아오는데 성공한다.")
     @Test
-    public void test_getFor_uriBuilder() throws Exception {
+    public void testGetMicrodustInfo() throws Exception {
         // given
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:00");
         String expectDateTime = simpleDateFormat.format(new Date());
+        String tmX = "212260.30360800";
+        String tmY = "455168.10145573";
 
         // when
-        MicrodustDto response = microdustService.getApi();
+        MicrodustDto response = microdustService.getMicrodustInfo(tmX,tmY);
 
         // then
         Assertions.assertThat(response.getDataTime()).isEqualTo(expectDateTime);
     }
+
 }

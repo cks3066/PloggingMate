@@ -1,0 +1,95 @@
+$color-main: #3fc556;
+
+@mixin alignCenter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn {
+  padding: 1rem 2rem;
+  border-radius: 10px;
+  margin: 10px 20px;
+  border: none;
+  transition: 0.2s;
+  &.btn-change,
+  &.btn-modify {
+    background-color: $color-main;
+    color: #fff;
+
+    &:hover {
+      background-color: #24a339;
+    }
+  }
+
+  &.btn-delete {
+    border: 1px solid #d3d3d3;
+    background-color: #fff;
+
+    &:hover {
+      background-color: #d3d3d3;
+    }
+  }
+}
+
+.userinfo-container {
+  width: 800px;
+  border: 1px solid #d3d3d3;
+  .inner {
+    padding: 1rem 2rem;
+
+    .box {
+      img {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        border: 1px solid #d3d3d3;
+      }
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      .btn-container {
+        display: flex;
+        flex-direction: column;
+      }
+    }
+
+    .my-point {
+      margin: 20px 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .info {
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+
+      span {
+        font-weight: bold;
+
+        text-align: left;
+        margin: 10px 0;
+      }
+
+      input {
+        padding: 1rem 2rem;
+        border-radius: 10px;
+        border: 1px solid #d3d3d3;
+        outline: none;
+        &.input-name {
+          width: 200px;
+        }
+
+        &.input-address {
+          width: 400px;
+        }
+      }
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    width: 500px;
+  }
+}

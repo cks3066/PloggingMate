@@ -16,46 +16,55 @@ const Grade = ({ grade }) => {
     default:
       return;
   }
-}
+};
 
 const Dust = () => {
   const dispatch = useDispatch();
-  const user = useSelector(state => state.user);
+  const user = useSelector((state) => state.user);
   const [dustData, setDustData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const location = user.user.address.split(" ");
 
   useEffect(() => {
     if (user.is_login) {
-      axios.get("http://localhost:8080/app/v1/microdust", {
-        headers: {
-          "X-ACCESS-TOKEN": user.jwt
-        }
-      }).then(res => {
-        setDustData(res.data.result)
-        setIsLoading(false);
-      }).catch(error => {
-        console.log(error.response.data)
-      })
+      axios
+        .get("http://localhost:8080/app/microdust", {
+          headers: {
+            "X-ACCESS-TOKEN": user.jwt,
+          },
+        })
+        .then((res) => {
+          setDustData(res.data.result);
+          setIsLoading(false);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     }
-  }, [])
+  }, []);
 
   return (
     <React.Fragment>
       <div className="dust-container">
-        {isLoading || !user.is_login ? <p>loading</p> : (
+        {isLoading || !user.is_login ? (
+          <p>loading</p>
+        ) : (
           <div>
-            <p>{location[0] + ' ' + location[1]}의 미세먼지 정보 : </p>
+            <p>{location[0] + " " + location[1]}의 미세먼지 정보 : </p>
             <p>측정일시 : {dustData.dataTime}</p>
-            <p>통합대기환경수치 :<Grade grade={dustData.khaiGrade} /> </p>
+            <p>
+              통합대기환경수치 :<Grade grade={dustData.khaiGrade} />{" "}
+            </p>
             <p>통합대시환경지수 : {dustData.khaiValue}</p>
-            <p>미세먼지 등급 : <Grade grade={dustData.pm10Grade} /></p>
+            <p>
+              미세먼지 등급 : <Grade grade={dustData.pm10Grade} />
+            </p>
             <p>미세먼지 농도 : {dustData.pm10Value}</p>
           </div>
         )}
       </div>
-    </React.Fragment >
+    </React.Fragment>
   );
-}
+};
 
 export default Dust;

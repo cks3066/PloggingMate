@@ -20,7 +20,7 @@ function Park() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (inputText.trim() !== "")
-      msg.innerHTML = `<strong>${inputText}</strong>에 대한 검색 결과입니다`;
+      msg.innerHTML = `<strong>${inputText} 공원</strong>에 대한 검색 결과입니다`;
     setPlace(inputText + " 공원");
     setInputText("");
   };

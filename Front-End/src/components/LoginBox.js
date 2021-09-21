@@ -5,8 +5,8 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 
 function LoginBox() {
-  const login = useSelector(state => state.user.is_login);
-  const user = useSelector(state => state.user.user);
+  const login = useSelector((state) => state.user.is_login);
+  const user = useSelector((state) => state.user.user);
   return (
     <React.Fragment>
       <div className="userbox-container">
@@ -17,7 +17,7 @@ function LoginBox() {
               안녕하세요!😀
             </p>
             <div className="btn-container">
-              <Link to="/" className="link btn to-mypage">
+              <Link to="/userinfo" className="link btn to-mypage">
                 마이 페이지
               </Link>
               <Link to="/postlist" className="link btn to-challenge">

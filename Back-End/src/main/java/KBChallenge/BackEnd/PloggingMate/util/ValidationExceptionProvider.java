@@ -19,6 +19,7 @@ public class ValidationExceptionProvider {
             else if (target.equals("password")) return CustomExceptionStatus.POST_USERS_EMPTY_PASSWORD;
             else if (target.equals("nickname")) return CustomExceptionStatus.POST_USERS_EMPTY_NICKNAME;
             else if(target.equals("address")) return CustomExceptionStatus.POST_USERS_EMPTY_ADDRESS;
+            else if(target.equals("name")) return CustomExceptionStatus.POST_USERS_EMPTY_NAME;
         }
         else if (code.equals("Pattern") || code.equals("Length")){
             if (target.equals("nickname")) return CustomExceptionStatus.POST_USERS_INVALID_NICKNAME;
