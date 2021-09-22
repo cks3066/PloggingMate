@@ -2,11 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { Loading3QuartersOutlined } from "@ant-design/icons";
-<<<<<<< HEAD
-=======
 import "../scss/Dust.scss";
-
->>>>>>> 2126b110b8b727d370a4934babdddd970e1d8bc6
 
 const Grade = ({ grade }) => {
   switch (grade) {
@@ -47,11 +43,7 @@ const Dust = (props) => {
   return (
     <React.Fragment>
       <div className="dust-container">
-<<<<<<< HEAD
-        {isLoading || !user.is_login ? (
-=======
         {isLoading ? (
->>>>>>> 2126b110b8b727d370a4934babdddd970e1d8bc6
           <Loading3QuartersOutlined
             spin
             style={{ fontSize: "50px", color: "#3fc556" }}

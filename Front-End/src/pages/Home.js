@@ -12,8 +12,6 @@ import "../scss/Home.scss";
 
 import "../scss/Home.scss";
 import Ranking from "../components/Ranking";
-<<<<<<< HEAD
-=======
 
 const Home = () => {
   const API_AUTH =
@@ -84,7 +82,6 @@ const Home = () => {
         });
     }
   }, []);
->>>>>>> 2126b110b8b727d370a4934babdddd970e1d8bc6
 
   return (
     <Container>
