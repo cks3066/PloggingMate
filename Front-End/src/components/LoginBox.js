@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import "../scss/LoginBox.scss";
 import { useSelector } from "react-redux";
 import axios from "axios";
-
+import { UserAddOutlined } from "@ant-design/icons";
 function LoginBox() {
   const login = useSelector((state) => state.user.is_login);
   const user = useSelector((state) => state.user.user);
@@ -27,13 +27,19 @@ function LoginBox() {
           </div>
         ) : (
           <div className="loginbox">
-            <span>
+            <span className="guide">
+              <UserAddOutlined
+                style={{ marginRight: "15px", marginLeft: "-10px" }}
+              />
               <strong>로그인</strong>하여 <br />
               주위에서 진행되는 <br />
               플로깅에 참석해보세요!
             </span>
             <Link to="/login" className="link btn">
               로그인 하러가기
+            </Link>
+            <Link to="/signup" className="link btn">
+              회원가입하러가기
             </Link>
           </div>
         )}

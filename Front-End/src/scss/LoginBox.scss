@@ -10,9 +10,8 @@ $color-main: #3fc556;
   @include aligncenter();
   border: 1px solid #d3d3d3;
   border-radius: 10px;
-  position: relative;
   width: 350px;
-  height: 350px;
+  height: 300px;
 
   @media screen and (max-width: 768px) {
     width: 500px;
@@ -28,7 +27,7 @@ $color-main: #3fc556;
 
   .userbox {
     p {
-      font-size: 2rem;
+      font-size: 1rem;
       line-height: 2;
     }
     @include aligncenter();
@@ -63,8 +62,9 @@ $color-main: #3fc556;
 
   .loginbox {
     @include aligncenter();
+    flex-direction: column;
     span {
-      font-size: 2rem;
+      font-size: 1.8rem;
     }
     .btn {
       @include aligncenter();
@@ -72,14 +72,18 @@ $color-main: #3fc556;
       border: 1px solid $color-main;
       border-radius: 10px;
       transition: 0.2s;
+      font-weight: bold;
       color: $color-main;
-      position: absolute;
-      bottom: 30px;
-
+      margin: 5px;
+      background-color: #f2f8f3;
       &:hover {
         background-color: $color-main;
         color: #fff;
       }
     }
   }
+}
+
+.guide {
+  margin-bottom: 10px;
 }

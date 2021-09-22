@@ -9,8 +9,6 @@ import Dust from "../components/Dust";
 import FindPark from "../components/FindPark";
 
 import "../scss/Home.scss";
-
-import "../scss/Home.scss";
 import Ranking from "../components/Ranking";
 
 const Home = () => {
@@ -111,7 +109,7 @@ const Section = styled.section`
   display: flex;
   flex-wrap: wrap;
   /* justify-content: space-between; */
-  margin-top: 40px;
+  margin-top: 20px;
   @media screen and (max-width: 768px) {
     flex-direction: column-reverse;
   }
