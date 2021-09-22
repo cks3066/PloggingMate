@@ -1,5 +1,5 @@
 import "./scss/App.scss";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import { BrowserRouter, Route } from "react-router-dom";
 import axios from "axios";
@@ -22,7 +22,7 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Navbar></Navbar>
-        <Route path="/" exact component={Home} />
+        <Route path="/" exact render={() => <Home />} />
         <Route path="/login" exact component={Login} />
         <Route path="/signup" exact component={SignUp} />
         <Route path="/userinfo" exact component={UserInfo} />

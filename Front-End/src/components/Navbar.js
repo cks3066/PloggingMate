@@ -11,31 +11,21 @@ function Navbar({ history }) {
   const dispatch = useDispatch();
   const isLogin = useSelector((state) => state.user.is_login);
 
-  const onClick = (e) => {
-    document.querySelectorAll(".tab-item").forEach((el) => {
-      if (el.classList.contains("active")) {
-        el.classList.remove("active");
-      }
-    });
-
-    if (e.target.className !== "logo") e.target.classList.add("active");
-  };
-
   return (
     <>
       <NormalNav>
         <NavbarItems>
-          <Link to="/" className="logo" onClick={onClick}>
+          <Link to="/" className="logo">
             <span className="home">
               <img src={require("../img/logo.png").default} alt="logo" />
               PloggingMate
             </span>
           </Link>
           <Tab>
-            <Link to="/postlist" className="tab-item" onClick={onClick}>
+            <Link to="/postlist" className="tab-item">
               Challenge
             </Link>
-            <Link to="/Park" className="tab-item" onClick={onClick}>
+            <Link to="/Park" className="tab-item">
               Park
             </Link>
             {isLogin ? (
@@ -50,10 +40,10 @@ function Navbar({ history }) {
               </Link>
             ) : (
               <>
-                <Link to="/signup" className="tab-item" onClick={onClick}>
+                <Link to="/signup" className="tab-item">
                   Sign Up
                 </Link>
-                <Link to="/login" className="tab-item" onClick={onClick}>
+                <Link to="/login" className="tab-item">
                   Login
                 </Link>
               </>

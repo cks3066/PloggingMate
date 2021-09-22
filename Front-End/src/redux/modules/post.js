@@ -5,6 +5,7 @@ const initialState = {
   list: [],
   paging: { start: null, next: null, size: 3 },
   is_loading: false,
+  address: null,
 };
 
 const initialPost = {
@@ -34,7 +35,7 @@ const loading = createAction(LOADING);
 
 // thunk middleware- 함수형 액션
 const thunkTest = (payload) => {
-  return function (dispatch, getState) { };
+  return function (dispatch, getState) {};
 };
 
 // 리듀서
@@ -43,6 +44,7 @@ export default createReducer(initialState, {
     state.list.push(action.payload.post_list);
     state.paging = action.payload.paging;
     state.is_loading = false;
+    state.address = action.payload.address;
   },
   [ADD_POST]: (state, action) => {
     state.list.unshift(action.payload.post);

@@ -45,6 +45,11 @@
       display: flex;
       justify-content: center;
       align-items: center;
+
+      .link {
+        text-decoration: none;
+      }
+
       .btn {
         cursor: pointer;
         outline: none;

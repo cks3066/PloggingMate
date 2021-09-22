@@ -1,9 +1,12 @@
 import React from "react";
 import "../scss/UserInfo.scss";
+import { useSelector } from "react-redux";
 
 import StarIcon from "@material-ui/icons/Star";
 
 function UserInfo() {
+  const user = useSelector((state) => state.user.user);
+  console.log(user);
   return (
     <React.Fragment>
       <div className="userinfo-container">
@@ -13,7 +16,7 @@ function UserInfo() {
             <img src={require("../img/logo.png").default} alt="logo" />
             <div className="btn-container">
               <button className="btn btn-change">Change Picture</button>
-              <button className="btn btn-delete">Delete Picture</button>
+              <button className="btn btn-myplogging">내 플로깅</button>
             </div>
           </div>
           <div className="my-point">
@@ -24,13 +27,13 @@ function UserInfo() {
             <input
               className="input-name"
               type="text"
-              placeholder="이름을 입력하세요."
+              placeholder={user.nickname}
             />
             <span>Address</span>
             <input
               className="input-address"
               type="text"
-              placeholder="주소를 입력하세요."
+              placeholder={user.address}
             />
           </div>
 
