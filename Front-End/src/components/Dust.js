@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+<<<<<<< HEAD
+=======
+
+import { useDispatch, useSelector } from "react-redux";
+>>>>>>> aef13d4e43b07f8a781ca339cc170373e2f340cb
 import { Loading3QuartersOutlined } from "@ant-design/icons";
 import "../scss/Dust.scss";
 import styled from "styled-components";
@@ -111,10 +116,12 @@ const Dust = (props) => {
     <React.Fragment>
       <div className="dust-container">
         {isLoading ? (
+
           <Loading3QuartersOutlined
             spin
             style={{ fontSize: "50px", color: "#3fc556" }}
           />
+
         ) : (
           <div>
             <Title>
