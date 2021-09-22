@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import "../scss/Dust.scss";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { Loading3QuartersOutlined } from "@ant-design/icons";
+import "../scss/Dust.scss";
+
 
 const Grade = ({ grade }) => {
   switch (grade) {
@@ -19,21 +20,17 @@ const Grade = ({ grade }) => {
   }
 };
 
-const Dust = () => {
-  const dispatch = useDispatch();
-  const user = useSelector((state) => state.user);
+const Dust = (props) => {
   const [dustData, setDustData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
-  const location = user.user.address.split(" ");
+  const [location, setLocation] = useState("");
 
   useEffect(() => {
-    if (user.is_login) {
+    if (props.pos.posX !== undefined && props.pos.posY !== undefined) {
+      const dustURL = `http://localhost:8080/app/microdust?tmX=${props.pos.posX}&tmY=${props.pos.posY}`;
+
       axios
-        .get("http://localhost:8080/app/microdust", {
-          headers: {
-            "X-ACCESS-TOKEN": user.jwt,
-          },
-        })
+        .get(dustURL)
         .then((res) => {
           setDustData(res.data.result);
           setIsLoading(false);
@@ -42,24 +39,24 @@ const Dust = () => {
           console.error(error);
         });
     }
-  }, []);
+  }, [props]);
 
   return (
     <React.Fragment>
       <div className="dust-container">
-        {isLoading || !user.is_login ? (
+        {isLoading ? (
           <Loading3QuartersOutlined
             spin
             style={{ fontSize: "50px", color: "#3fc556" }}
           />
         ) : (
           <div>
-            <p>{location[0] + " " + location[1]}의 미세먼지 정보 : </p>
-            <p>측정일시 : {dustData.dataTime}</p>
+            <p>{props.location}의 미세먼지 정보 : </p>
+            <p>측정일시 : {dustData.dataTime} </p>
             <p>
               통합대기환경수치 :<Grade grade={dustData.khaiGrade} />{" "}
             </p>
-            <p>통합대시환경지수 : {dustData.khaiValue}</p>
+            <p>통합대기환경지수 : {dustData.khaiValue}</p>
             <p>
               미세먼지 등급 : <Grade grade={dustData.pm10Grade} />
             </p>

@@ -5,6 +5,8 @@ $color-main: #3fc556;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  margin-top: 100px;
+  font-family: inherit;
   h1 {
     color: $color-main;
   }

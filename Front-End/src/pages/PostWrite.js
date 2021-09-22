@@ -6,16 +6,16 @@ import { withRouter } from "react-router";
 const PostWrite = (props) => {
   const { daum } = window;
   const is_login = useSelector((state) => state.user.is_login);
-  const user = useSelector((state => state.user.user))
+  const user = useSelector((state) => state.user.user);
   const { history } = props;
-  const [title, setTitle] = React.useState('');
-  const [content, setContent] = React.useState('');
-  const [address, setAddress] = React.useState('');
-  const [location, setLocation] = React.useState('');
+  const [title, setTitle] = React.useState("");
+  const [content, setContent] = React.useState("");
+  const [address, setAddress] = React.useState("");
+  const [location, setLocation] = React.useState("");
 
   if (!is_login) {
     window.alert("로그인 후 이용가능합니다.");
-    history.replace('/login');
+    history.replace("/login");
     return <></>;
   }
 
@@ -24,37 +24,65 @@ const PostWrite = (props) => {
       oncomplete: function (data) {
         setAddress(data.address);
         setLocation(data.buildingName);
-
-      }
+      },
     }).open();
-  }
+  };
 
   return (
     <Body>
       <ModalOverlay visible={true} />
-      <ModalWrapper
-        tabIndex="-1"
-        visible={true}>
+      <ModalWrapper tabIndex="-1" visible={true}>
         <Posts tabIndex="0">
-          <Notice>게시물 작성<GoBack onClick={() => history.goBack()}>X</GoBack></Notice>
+          <Notice>
+            게시물 작성<GoBack onClick={() => history.goBack()}>X</GoBack>
+          </Notice>
           <Img src="http://via.placeholder.com/400x300" alt="이미지" />
           <Container>
             <Title>
-              <Input title placeholder="* 타이틀을 적어주세요." onChange={(e) => setTitle(e.target.value)} maxLength="14" />
+              <Input
+                title
+                placeholder="* 타이틀을 적어주세요."
+                onChange={(e) => setTitle(e.target.value)}
+                maxLength="14"
+              />
             </Title>
-            <NoticeText>위치 : <Location onClick={onClickAddress}>{address == '' ? '* 주소를 검색하려면 클릭하세요' : `${address}`}{location !== '' ? `(${location})` : null}</Location></NoticeText>
-            <Input_Location placeholder="* 상세 위치 ex) ○○공원" maxLength="14" />
-            <NoticeText>일정 : <Date type="datetime-local" /></NoticeText>
+            <NoticeText>
+              위치 :{" "}
+              <Location onClick={onClickAddress}>
+                {address == ""
+                  ? "* 주소를 검색하려면 클릭하세요"
+                  : `${address}`}
+                {location !== "" ? `(${location})` : null}
+              </Location>
+            </NoticeText>
+            <Input_Location
+              placeholder="* 상세 위치 ex) ○○공원"
+              maxLength="14"
+            />
+            <NoticeText>
+              일정 : <Date type="datetime-local" />
+            </NoticeText>
             <Line />
-            <ContentContainer> <Input_Content rows="3" placeholder="* 소개글을 적어주세요. (40자이내)" maxLength="40" onChange={(e) => setContent(e.target.value)} /></ContentContainer>
-            <Warning>* 게시물에 욕설 및 비방을 포함하거나 게시물의 악용 시 삭제 조치 및 서비스 이용에 제한이 있을 수 있습니다.</Warning>
+            <ContentContainer>
+              {" "}
+              <Input_Content
+                rows="3"
+                placeholder="* 소개글을 적어주세요. (40자이내)"
+                maxLength="40"
+                onChange={(e) => setContent(e.target.value)}
+              />
+            </ContentContainer>
+            <Warning>
+              * 게시물에 욕설 및 비방을 포함하거나 게시물의 악용 시 삭제 조치 및
+              서비스 이용에 제한이 있을 수 있습니다.
+            </Warning>
             <Participation>작성 완료</Participation>
           </Container>
-        </Posts >
+        </Posts>
       </ModalWrapper>
-    </Body >
+    </Body>
   );
-}
+};
 
 const ModalWrapper = styled.div`
   box-sizing: border-box;
@@ -96,7 +124,7 @@ const Posts = styled.div`
   box-sizing: border-box;
   position: relative;
   display: flex;
-  align-content:flex-start;
+  align-content: flex-start;
   flex-wrap: wrap;
   border: 2px solid #d3d3d3;
   border-radius: 10px;
@@ -107,7 +135,7 @@ const Posts = styled.div`
   top: 50%;
   transform: translateY(-50%);
   margin: 0 auto;
-  
+
   @media screen and (max-width: 786px) {
     width: 680px;
   }
@@ -115,47 +143,51 @@ const Posts = styled.div`
   @media screen and (max-width: 650px) {
     width: 480px;
   }
-  `;
+`;
 
 const Notice = styled.h1`
-justify-content: space-between;
-padding : 15px;
-padding-left: 44%;
-display: flex;
-width:100%;
-border-bottom: 2px solid #d3d3d3;
-font-weight: bold;
-margin:0px;
-font-size: 20px;
-color: #505050;
+  justify-content: space-between;
+  padding: 15px;
+  padding-left: 44%;
+  display: flex;
+  width: 100%;
+  border-bottom: 2px solid #d3d3d3;
+  font-weight: bold;
+  margin: 0px;
+  font-size: 20px;
+  color: #505050;
 `;
 
 const Img = styled.img`
-width: 44%;
-height: 84%;
-margin:10px;
-border-radius: 5px;
-cursor: pointer;
+  width: 44%;
+  height: 84%;
+  margin: 10px;
+  border-radius: 5px;
+  cursor: pointer;
 `;
 
 const Container = styled.div`
-display: flex;
-flex-direction: column;
-width: 48%;
-margin: 10px 0px 10px 15px;
-`
+  display: flex;
+  flex-direction: column;
+  width: 48%;
+  margin: 10px 0px 10px 15px;
+`;
 
 const Input = styled.input.attrs({ required: true })`
-width:100%;
-border: none;
-font-size: 24px;
-font-weight: bold;
-color:#535c68;
-&::placeholder{
-    color:#8f8f8f;
-}
-&:focus{outline:none;}
-&:focus::-webkit-input-placeholder {color:transparent; }
+  width: 100%;
+  border: none;
+  font-size: 24px;
+  font-weight: bold;
+  color: #535c68;
+  &::placeholder {
+    color: #8f8f8f;
+  }
+  &:focus {
+    outline: none;
+  }
+  &:focus::-webkit-input-placeholder {
+    color: transparent;
+  }
 
   @media screen and (max-width: 780px) {
     font-size: 17px;
@@ -167,18 +199,22 @@ color:#535c68;
 `;
 
 const Input_Location = styled.input.attrs({ required: true })`
-width:80%;
-border: none;
-border-bottom : 1px solid gray;
-font-size: 16px;
-font-weight: bold;
-color:#535c68;
-margin-left : 13%;
-&::placeholder{
-    color:#8f8f8f;
-}
-&:focus{outline:none;}
-&:focus::-webkit-input-placeholder {color:transparent; }
+  width: 80%;
+  border: none;
+  border-bottom: 1px solid gray;
+  font-size: 16px;
+  font-weight: bold;
+  color: #535c68;
+  margin-left: 13%;
+  &::placeholder {
+    color: #8f8f8f;
+  }
+  &:focus {
+    outline: none;
+  }
+  &:focus::-webkit-input-placeholder {
+    color: transparent;
+  }
 
   @media screen and (max-width: 780px) {
     font-size: 14px;
@@ -190,17 +226,21 @@ margin-left : 13%;
 `;
 
 const Input_Content = styled.textarea.attrs({ required: true })`
-width:100%;
-border: none;
-font-size: 17px;
-font-weight: bold;
-color:#535c68;
-resize: none;
-&::placeholder{
-    color:#8f8f8f;
-}
-&:focus{outline:none;}
-&:focus::-webkit-input-placeholder {color:transparent; }
+  width: 100%;
+  border: none;
+  font-size: 17px;
+  font-weight: bold;
+  color: #535c68;
+  resize: none;
+  &::placeholder {
+    color: #8f8f8f;
+  }
+  &:focus {
+    outline: none;
+  }
+  &:focus::-webkit-input-placeholder {
+    color: transparent;
+  }
 
   @media screen and (max-width: 780px) {
     font-size: 14px;
@@ -212,23 +252,23 @@ resize: none;
 `;
 
 const Title = styled.div`
-display: flex;
-height: 15%;
-border-bottom : 1px solid #8f8f8f;
-justify-content: flex-start;
+  display: flex;
+  height: 15%;
+  border-bottom: 1px solid #8f8f8f;
+  justify-content: flex-start;
 `;
 
 const Location = styled.div`
-border: none;
-color : #535c68;
-margin-left : 15px;
-font-size:15px;
-cursor: pointer;
-&:hover{
-  outline: 1px solid black;
-}
+  border: none;
+  color: #535c68;
+  margin-left: 15px;
+  font-size: 15px;
+  cursor: pointer;
+  &:hover {
+    outline: 1px solid black;
+  }
 
-@media screen and (max-width: 780px) {
+  @media screen and (max-width: 780px) {
     font-size: 14px;
   }
 
@@ -238,29 +278,31 @@ cursor: pointer;
 `;
 
 const Date = styled.input`
-margin-left:15px;
-border: none;
-font-size: 15px;
-font-weight: bold;
-&:focus{outline:1px solid #8f8f8f}
+  margin-left: 15px;
+  border: none;
+  font-size: 15px;
+  font-weight: bold;
+  &:focus {
+    outline: 1px solid #8f8f8f;
+  }
 `;
 
 const GoBack = styled.button`
-border: none;
-border-radius: 15px;
-font-size: 15px;
-padding: 0px;
-padding-left: 7px;
-padding-right: 7px;
-margin: 0px;
-margin-right: 5px;
-background-color: #D8DADF;
-color: #696F78;
-font-weight: bold;
-cursor: pointer;
-&:hover{
+  border: none;
+  border-radius: 15px;
+  font-size: 15px;
+  padding: 0px;
+  padding-left: 7px;
+  padding-right: 7px;
+  margin: 0px;
+  margin-right: 5px;
+  background-color: #d8dadf;
+  color: #696f78;
+  font-weight: bold;
+  cursor: pointer;
+  &:hover {
     background-color: #babcc0;
-}
+  }
 `;
 
 const Line = styled.div`
@@ -269,34 +311,34 @@ const Line = styled.div`
 
 const NoticeText = styled.h4`
   text-align: left;
-  margin:15px 0px;
+  margin: 15px 0px;
   display: flex;
   color: #8d8d8d;
-  margin-right:10px;
+  margin-right: 10px;
 `;
 
 const ContentContainer = styled.div`
-height: 30%;
-margin: 20px 0px;
-border : 1px solid #8f8f8f;
-border-radius: 10px;
-padding: 15px;
+  height: 30%;
+  margin: 20px 0px;
+  border: 1px solid #8f8f8f;
+  border-radius: 10px;
+  padding: 15px;
 `;
 
 const Participation = styled.button`
-  margin:5px;
+  margin: 5px;
   background-color: #3fc556;
-  border:0.2px solid #bdbdbd;
+  border: 0.2px solid #bdbdbd;
   font-size: 18px;
-  color:white;
+  color: white;
   border-radius: 5px;
   cursor: pointer;
-`
+`;
 
 const Warning = styled.b`
-color : #bdbdbd;
-font-size: 13px;
-margin: 5% 0px 5px 0px;
+  color: #bdbdbd;
+  font-size: 13px;
+  margin: 5% 0px 5px 0px;
 `;
 
 export default withRouter(PostWrite);

@@ -13,6 +13,7 @@ const post = [
 
 const PostList = (props) => {
   const is_login = useSelector((state) => state.user.is_login);
+  const address = useSelector((state) => state.address);
   const [showNum, setShowNum] = React.useState(12);
   const [showNum_complete, setShowNum_complete] = React.useState(8);
   const [modalVisible, setModalVisible] = React.useState(false);
@@ -71,10 +72,11 @@ const PostList = (props) => {
       </SubTitle>
       <Posts>
         <PostsElm>
-          {is_login &&
+          {is_login && (
             <Link to="/postwrite" className="Link_PostWrtie">
               새 게시물 작성
-            </Link>}
+            </Link>
+          )}
         </PostsElm>
         {rendering()}
         <Button onClick={clickMore}>더보기</Button>

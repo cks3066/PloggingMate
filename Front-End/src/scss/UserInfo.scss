@@ -1,11 +1,5 @@
 $color-main: #3fc556;
 
-@mixin alignCenter {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .btn {
   padding: 1rem 2rem;
   border-radius: 10px;
@@ -22,7 +16,7 @@ $color-main: #3fc556;
     }
   }
 
-  &.btn-delete {
+  &.btn-myplogging {
     border: 1px solid #d3d3d3;
     background-color: #fff;
 
@@ -35,9 +29,10 @@ $color-main: #3fc556;
 .userinfo-container {
   width: 800px;
   border: 1px solid #d3d3d3;
+  margin-top: 100px;
+
   .inner {
     padding: 1rem 2rem;
-
     .box {
       img {
         width: 150px;
@@ -46,8 +41,9 @@ $color-main: #3fc556;
         border: 1px solid #d3d3d3;
       }
       display: flex;
-      align-items: center;
       justify-content: center;
+      align-items: center;
+
       .btn-container {
         display: flex;
         flex-direction: column;
@@ -91,5 +87,7 @@ $color-main: #3fc556;
 
   @media screen and (max-width: 768px) {
     width: 500px;
+
+    max-height: 100%;
   }
 }
