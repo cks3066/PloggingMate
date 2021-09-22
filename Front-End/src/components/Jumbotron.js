@@ -38,7 +38,6 @@ function Jumbotron() {
           })}
         </Swiper>
       </Container>
-      <p>슬라이드를 누르시면 챌린지로 이동합니다.</p>
     </React.Fragment>
   );
 }

@@ -1,4 +1,5 @@
 import { createAction, createReducer } from "@reduxjs/toolkit";
+import axios from "axios";
 import moment from "moment";
 
 const initialState = {
@@ -36,6 +37,17 @@ const loading = createAction(LOADING);
 // thunk middleware- 함수형 액션
 const thunkTest = (payload) => {
   return function (dispatch, getState) {};
+};
+
+const getPost = (payload) => {
+  return function (dispatch, getState) {
+    axios
+      .post("http://localhost:8080/app/sign-in", {})
+      .then((res) => {})
+      .catch((error) => {
+        window.alert(error.response.data.message);
+      });
+  };
 };
 
 // 리듀서

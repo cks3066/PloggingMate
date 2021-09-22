@@ -118,9 +118,12 @@ const Body = styled.div`
   bottom: 2em;
   right: 5em;
   z-index: 1;
-  border-radius: 5px;
+  border-radius: 10px;
   border: 1px solid #a5a5a5;
   background-color: white;
+  @media screen and (max-width: 930px) {
+    display: none;
+  }
 `;
 const CloseButton = styled(CloseCircleOutlined)`
   cursor: pointer;
@@ -132,7 +135,8 @@ const HeaderInRank = styled.div`
   justify-content: space-between;
   border-bottom: 1px solid #a5a5a5;
   background-color: #ebebeb;
-  border-radius: 5px 5px 0px 0px;
+  border-radius: 10px 10px 0px 0px;
+  font-weight: bold;
 `;
 
 const Table = styled.table`
@@ -146,5 +150,9 @@ const RankTable = styled.div`
   margin: 5%;
 `;
 
-const RankElement = styled.div``;
+const RankElement = styled.div`
+  font-weight: bold;
+  font-size: 13px;
+  color: #2f3640;
+`;
 export default Ranking;
