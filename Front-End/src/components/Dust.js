@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "../scss/Dust.scss";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
+import { Loading3QuartersOutlined } from "@ant-design/icons";
 
 const Grade = ({ grade }) => {
   switch (grade) {
@@ -47,7 +48,10 @@ const Dust = () => {
     <React.Fragment>
       <div className="dust-container">
         {isLoading || !user.is_login ? (
-          <p>loading</p>
+          <Loading3QuartersOutlined
+            spin
+            style={{ fontSize: "50px", color: "#3fc556" }}
+          />
         ) : (
           <div>
             <p>{location[0] + " " + location[1]}의 미세먼지 정보 : </p>

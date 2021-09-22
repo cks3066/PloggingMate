@@ -10,6 +10,7 @@ import FindPark from "../components/FindPark";
 import "../scss/Home.scss";
 
 import "../scss/Home.scss";
+import Ranking from "../components/Ranking";
 
 const Home = (props) => {
   return (
@@ -20,6 +21,7 @@ const Home = (props) => {
         <LoginBox></LoginBox>
       </Section>
       <FindPark></FindPark>
+      <Ranking />
     </Container>
   );
 };

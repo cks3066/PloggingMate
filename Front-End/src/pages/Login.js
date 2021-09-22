@@ -9,12 +9,12 @@ const Login = ({ history }) => {
   const dispatch = useDispatch();
   const [id, setId] = React.useState("");
   const [pwd, setPwd] = React.useState("");
-  const is_login = useSelector(state => state.user.is_login);
+  const is_login = useSelector((state) => state.user.is_login);
 
-  if (is_login) history.goBack()
+  if (is_login) history.goBack();
   return (
-    <React.Fragment>
-      {!is_login &&
+    <Body>
+      {!is_login && (
         <Card>
           <Logo>
             <Img src={require("../img/logo.png").default} alt="logo" />
@@ -33,7 +33,8 @@ const Login = ({ history }) => {
               placeholder="아이디를 입력해주세요."
               onChange={(e) => {
                 e.target.style.backgroundColor = "#e3f0e4";
-                if (e.target.value === "") e.target.style.backgroundColor = "white";
+                if (e.target.value === "")
+                  e.target.style.backgroundColor = "white";
                 setId(e.target.value);
               }}
               onFocus={(e) => {
@@ -49,7 +50,8 @@ const Login = ({ history }) => {
               placeholder="비밀번호를 입력해주세요."
               onChange={(e) => {
                 e.target.style.backgroundColor = "#e3f0e4";
-                if (e.target.value === "") e.target.style.backgroundColor = "white";
+                if (e.target.value === "")
+                  e.target.style.backgroundColor = "white";
                 setPwd(e.target.value);
               }}
               onFocus={(e) => {
@@ -71,12 +73,21 @@ const Login = ({ history }) => {
             </ETC>
           </Form>
         </Card>
-      }
-    </React.Fragment>
+      )}
+    </Body>
   );
 };
 
 export default withRouter(Login);
+const Body = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 100px;
+  margin-bottom: 60px;
+  max-width: 1200px;
+`;
 
 const Form = styled.form`
   display: flex;
