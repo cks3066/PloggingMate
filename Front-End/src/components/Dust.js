@@ -112,10 +112,15 @@ const Dust = (props) => {
     <React.Fragment>
       <div className="dust-container">
         {isLoading ? (
-          <Loading3QuartersOutlined
-            spin
-            style={{ fontSize: "50px", color: "#3fc556" }}
-          />
+          <Loading>
+            <Loading3QuartersOutlined
+              spin
+              style={{ fontSize: "50px", color: "#3fc556" }}
+            />
+            <span style={{ margin: "30px" }}>
+              로딩이 지속될 경우 새로고침하세요.
+            </span>
+          </Loading>
         ) : (
           <div>
             <Title>
@@ -178,12 +183,14 @@ const Location = styled.div`
   margin: 0px;
   margin-top: 15px;
   margin-left: 55%;
+  color: #7f8c8d;
 `;
 const Time = styled.div`
   font-size: 12px;
   margin: 0px;
   margin-top: 5px;
   margin-left: 48%;
+  color: #7f8c8d;
 `;
 const Container = styled.div`
   display: flex;
@@ -209,11 +216,14 @@ const GradeBox = styled.div`
   padding: 2px;
   font-size: 14px;
 `;
-
 const ShowGrade = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   margin-left: -7%;
+`;
+const Loading = styled.div`
+  display: flex;
+  flex-direction: column;
 `;
 export default Dust;

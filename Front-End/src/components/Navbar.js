@@ -33,7 +33,9 @@ function Navbar({ history }) {
                 to="/"
                 className="tab-item"
                 onClick={() => {
-                  dispatch(userActions.logOut());
+                  if (window.confirm("로그아웃 하시겠습니까?")) {
+                    dispatch(userActions.logOut());
+                  }
                 }}
               >
                 Logout

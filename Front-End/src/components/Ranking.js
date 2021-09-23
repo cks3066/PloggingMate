@@ -1,6 +1,23 @@
 import React from "react";
 import styled from "styled-components";
-import { CloseCircleOutlined, TrophyTwoTone } from "@ant-design/icons";
+import {
+  CloseCircleOutlined,
+  TrophyTwoTone,
+  CrownFilled,
+} from "@ant-design/icons";
+
+const dummy = [
+  { rank: 1, id: "on_schan", count: 17 },
+  { rank: 2, id: "abcMart", count: 15 },
+  { rank: 3, id: "addidas", count: 14 },
+  { rank: 4, id: "nike12", count: 11 },
+  { rank: 5, id: "puma345", count: 9 },
+  { rank: 5, id: "newbale", count: 9 },
+  { rank: 7, id: "amigo", count: 7 },
+  { rank: 8, id: "lightlit", count: 5 },
+  { rank: 9, id: "abcasdz", count: 4 },
+  { rank: 10, id: "hellowoman", count: 2 },
+];
 
 const Ranking = (props) => {
   const [toggle, setToggle] = React.useState(true);
@@ -15,6 +32,35 @@ const Ranking = (props) => {
     rankButton = document.getElementById("RankButton");
     rankButton.style.display = "block";
   };
+  const now = new Date();
+  const month = now.getMonth() + 1;
+  const rendering = () => {
+    const result = [];
+    dummy.map((item, index) => {
+      result.push(
+        <Elem key={index}>
+          <Rank>
+            {item.rank === 1 ? (
+              <>
+                <CrownFilled
+                  style={{
+                    fontSize: "20px",
+                    color: "#FFC312",
+                  }}
+                />
+              </>
+            ) : (
+              <> {item.rank}등</>
+            )}
+          </Rank>
+          <ID>{item.id}</ID>
+          <Count>{item.count}</Count>
+        </Elem>
+      );
+    });
+    return result;
+  };
+
   return (
     <>
       <RankButton onClick={onClick} id="RankButton">
@@ -34,9 +80,9 @@ const Ranking = (props) => {
               twoToneColor="#FFC312"
               style={{ fontSize: "20px" }}
             />
-            Ranking
+            {month}월의 Ranking
             <CloseButton
-              style={{ fontSize: "18px", color: "black" }}
+              style={{ fontSize: "18px", color: "#576574" }}
               onClick={onCloseButtonClick}
             />
           </HeaderInRank>
@@ -44,50 +90,7 @@ const Ranking = (props) => {
             <RankElement>순위</RankElement> <RankElement>아이디</RankElement>
             <RankElement>참여</RankElement>
           </RankTable>
-          <Table>
-            <tr>
-              <td>1</td>
-              <td>on_schan</td> <td>12</td>
-            </tr>
-            <tr>
-              <td>2</td>
-              <td>dhstmdcks</td> <td>10</td>
-            </tr>
-            <tr>
-              <td>3</td>
-              <td>tmdcks</td> <td>10</td>
-            </tr>
-            <tr>
-              <td>4</td>
-              <td>cks</td> <td>9</td>
-            </tr>
-            <tr>
-              <td>5</td>
-              <td>on1234</td>
-              <td>8</td>
-            </tr>
-            <tr>
-              <td>6</td>
-              <td>tmd0987</td> <td>8</td>
-            </tr>
-            <tr>
-              <td>7</td>
-              <td>cks1234</td> <td>7</td>
-            </tr>
-            <tr>
-              <td>8</td>
-              <td>qweasd</td>
-              <td>5</td>
-            </tr>
-            <tr>
-              <td>9</td>
-              <td>zxczxc</td> <td>4</td>
-            </tr>
-            <tr>
-              <td>10</td>
-              <td>zxcasdqwea</td> <td>3</td>
-            </tr>
-          </Table>
+          <Table>{rendering()}</Table>
         </Body>
       )}
     </>
@@ -139,11 +142,46 @@ const HeaderInRank = styled.div`
   font-weight: bold;
 `;
 
-const Table = styled.table`
+const Table = styled.div`
+  display: flex;
+  flex-direction: column;
   width: 100%;
   height: 85%;
+  display: flex;
+  justify-content: flex-start;
 `;
 
+const Elem = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding-top: 2%;
+  padding-bottom: 2%;
+  height: 8%;
+  align-items: center;
+  margin-top: 1%;
+  margin-bottom: 4%;
+`;
+const Rank = styled.div`
+  display: flex;
+  width: 20%;
+  align-items: center;
+  justify-content: center;
+  margin-left: 3%;
+`;
+const ID = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+const Count = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 15%;
+  padding-left: 10px;
+  padding-right: 5%;
+`;
 const RankTable = styled.div`
   display: flex;
   justify-content: space-between;

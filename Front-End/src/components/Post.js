@@ -3,13 +3,27 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 
 const Post = (props) => {
+  const { post } = props;
+  const { is_progress } = props;
+  const yearMonth = post.reservedAt.split("-");
+  const dayTime = yearMonth[2].split("T");
+  const time = dayTime[1].split(":");
+  const date = {
+    year: yearMonth[0],
+    month: yearMonth[1],
+    day: dayTime[0],
+    hour: time[0],
+    minute: time[1],
+  };
   return (
     <PostBody>
       <Link
         to={{
-          pathname: `/postdetail/${props.post_id}`,
+          pathname: `/postdetail/${post.postId}`,
           state: {
-            props,
+            post,
+            date,
+            is_progress,
           },
         }}
         className="Link_Post"
@@ -19,40 +33,33 @@ const Post = (props) => {
             "url(" +
             `${props.image_url}` +
             "/" +
-            `${props.post_id}` +
+            `${post.postId}` +
             ")",
         }}
       >
-        {props.is_progress ? (
+        {is_progress ? (
           <Top>
-            <Participant>참가 {props.participant_num}/5</Participant>
+            <Participant>참가 {post.applyCount}/5</Participant>
             <Progress>진행중</Progress>
           </Top>
         ) : (
           <Expired>완료</Expired>
         )}
-        <Content> {props.contents}</Content>
+        <Content> {post.contents}</Content>
         <div>
-          <Date>{props.position} </Date>
-          <Date>{props.date} </Date>
+          <Date>{post.parkName} </Date>
+          <Date>
+            {date.month}월 {date.day}일 {date.hour}시 {date.minute}분
+          </Date>
         </div>
       </Link>
-      <UserName>{props.user_name}</UserName>
+      <UserName>포스트에 등록된 작성자 아이디</UserName>
     </PostBody>
   );
 };
 
-export default Post;
-
 Post.defaultProps = {
-  post_id: 1,
-  is_me: false,
-  user_name: "on.schan",
-  position: "낙산공원",
-  contents: "같이 주말에 플로깅해요!",
   image_url: "https://source.unsplash.com/random",
-  date: "9월 11일 7PM",
-  participant_num: 3,
   is_progress: true,
 };
 
@@ -106,9 +113,13 @@ const UserName = styled.span`
   color: gray;
   font-weight: 1000;
   font-size: 12px;
+  margin-top: 5px;
+  cursor: pointer;
 `;
 
 const Top = styled.div`
   display: flex;
   justify-content: space-between;
 `;
+
+export default Post;

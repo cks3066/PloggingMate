@@ -4,21 +4,23 @@ import thunk from "redux-thunk";
 import test from "./modules/test";
 import user from "./modules/user";
 import img from "./modules/img";
-import { persistReducer } from 'redux-persist';
+import post from "./modules/post";
+import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
-import { combineReducers } from 'redux';
+import { combineReducers } from "redux";
 
 // 루트리듀서
 const rootReducer = combineReducers({
   test,
   user,
   img,
+  post,
 });
 
 // redux-persist
 const persistConfig = {
-  key: 'root',
-  storage
+  key: "root",
+  storage,
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

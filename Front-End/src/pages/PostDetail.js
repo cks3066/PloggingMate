@@ -3,11 +3,24 @@ import styled from "styled-components";
 import Modal_Post from "../elements/Modal_Post";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import { actionCreators as postActions } from "../redux/modules/post";
 
 const PostDetail = (props) => {
   const history = useHistory();
-  const postData = props.location.state.props;
+  const dispatch = useDispatch();
+  const { post } = props.location.state;
+  const { date } = props.location.state;
+  const { is_progress } = props.location.state;
+  const { user } = useSelector((state) => state.user);
   const [modalVisible, setModalVisible] = React.useState(true);
+  const url = `https://source.unsplash.com/random/${post.postId}`;
+  const [count, setCount] = React.useState(post.applyCount);
+  const [userList, setUserList] = React.useState(post.accounts);
+  const applied =
+    post.accounts.filter((item) => item.accountId === user.uid).length !== 0
+      ? true
+      : false;
   const openModal = () => {
     setModalVisible(true);
   };
@@ -15,8 +28,27 @@ const PostDetail = (props) => {
     setModalVisible(false);
     history.goBack();
   };
-
-  console.log(postData);
+  const onClick = () => {
+    if (!applied) {
+      if (window.confirm("플로깅에 참여하시겠습니까?")) {
+        dispatch(postActions.applyPost(post.postId));
+      }
+    } else {
+      if (window.confirm("플로깅 참여를 취소하시겠습니까?")) {
+        dispatch(postActions.applyPost(post.postId));
+      }
+    }
+  };
+  const rendering = () => {
+    const result = [];
+    post.accounts.map((item, index) => {
+      result.push(<p key={index}>{item.accountName}</p>);
+    });
+    return result;
+  };
+  React.useEffect(() => {
+    rendering();
+  });
 
   return (
     <Container>
@@ -27,17 +59,33 @@ const PostDetail = (props) => {
           maskClosable={true}
           onClose={closeModal}
         >
-          <Img src={postData.image_url} alt="image" />
+          <Img src={url} alt="image" />
           <Contents>
-            <Title>{postData.contents}</Title>
-            <Notice><NoticeInner>위치 : </NoticeInner>{postData.position}</Notice>
-            <Notice><NoticeInner>일정 : </NoticeInner>{postData.date}</Notice>
+            <Title>{post.contents}</Title>
+            <Notice style={{ flexDirection: "column" }}>
+              <NoticeInner>위치 : {post.address} </NoticeInner>
+              <LocationDetail>{post.parkName} </LocationDetail>
+            </Notice>
+            <Notice>
+              <NoticeInner>일정 : </NoticeInner>
+              {date.year}년 {date.month}월 {date.day}일 {date.hour}시{" "}
+              {date.minute}분
+            </Notice>
             <Line />
-            <Content>토요일 오후 낙산공원에서 환경을 위해 다같이 플로깅하는게 어때요? 😊</Content>
+            <Content>포스트에 들어있는 세부정보 넣기</Content>
             <Line />
-            <Notice participant><NoticeInner>참여자</NoticeInner><ParticipantNotice>3/5</ParticipantNotice></Notice>
-            <Participant>on_schan, onsky, onstar</Participant>
-            <Participation>플로깅 참여</Participation>
+            <Notice participant>
+              <NoticeInner>참여자</NoticeInner>
+              <ParticipantNotice>{post.applyCount}/5</ParticipantNotice>
+            </Notice>
+            <Participant>{rendering()}</Participant>
+            {is_progress ? (
+              <Participation onClick={onClick}>
+                {!applied ? "플로깅 참여" : "플로깅 참여 취소"}
+              </Participation>
+            ) : (
+              <Expired>완료된 플로깅입니다</Expired>
+            )}
           </Contents>
         </Modal_Post>
       )}
@@ -49,6 +97,13 @@ export default PostDetail;
 
 const Container = styled.div`
   display: flex;
+`;
+
+const LocationDetail = styled.b`
+  color: #535c68;
+  margin-top: 10px;
+  margin-left: 14%;
+  margin-bottom: 0px;
 `;
 
 const Img = styled.img`
@@ -83,7 +138,7 @@ const Title = styled.h2`
 
 const Notice = styled.h4`
   text-align: left;
-  margin:10px 0px 10px 0px;
+  margin: 8px 0px 8px 0px;
   display: flex;
   @media screen and (max-width: 700px) {
     font-size: 16px;
@@ -94,8 +149,8 @@ const Notice = styled.h4`
 `;
 
 const NoticeInner = styled.b`
-color: #8d8d8d;
-margin-right:10px;
+  color: #8d8d8d;
+  margin-right: 10px;
 `;
 
 const Contents = styled.div`
@@ -110,14 +165,13 @@ const Content = styled.div`
   text-align: left;
   color: #535c68;
   font-weight: 600;
-  border : 1px solid #8f8f8f;
-  margin : 15px 0px 15px 0px;
-  padding : 12px;
+  border: 1px solid #8f8f8f;
+  margin: 15px 0px 15px 0px;
+  padding: 12px;
   border-radius: 10px;
   @media screen and (max-width: 540px) {
     font-size: 14px;
   }
-
 `;
 
 const Line = styled.div`
@@ -127,25 +181,40 @@ const Line = styled.div`
 const Participant = styled.h4`
   font-size: 16px;
   text-align: left;
-  margin:0px 0px 5px 0px;
+  margin: 0px 0px 5px 0px;
   height: 22%;
 `;
 
 const ParticipantNotice = styled.b`
-background-color: #d1d1d1;
-padding:3px 4px 3px 4px;
-border-radius: 10px;
-font-size: 13px;
-letter-spacing :1px;
-
+  background-color: #d1d1d1;
+  padding: 3px 4px 3px 4px;
+  border-radius: 10px;
+  font-size: 13px;
+  letter-spacing: 1px;
 `;
 
 const Participation = styled.button`
-  margin:5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 5px;
   background-color: #3fc556;
-  border:0.2px solid #bdbdbd;
+  border: 0.2px solid #bdbdbd;
   font-size: 18px;
-  color:white;
+  color: white;
   border-radius: 5px;
+  height: 10%;
   cursor: pointer;
-`
+`;
+const Expired = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 5px;
+  background-color: #bdbdbd;
+  border: 0.2px solid #bdbdbd;
+  font-size: 18px;
+  color: white;
+  height: 10%;
+  border-radius: 5px;
+`;

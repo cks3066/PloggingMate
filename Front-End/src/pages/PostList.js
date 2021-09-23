@@ -4,53 +4,62 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import Modal from "../elements/Modal";
 import { useDispatch, useSelector } from "react-redux";
-
-const 총게시물 = 26;
-const post = [
-  1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22,
-  23, 24, 25, 26,
-];
+import { actionCreators as postActions } from "../redux/modules/post";
 
 const PostList = (props) => {
+  const dispatch = useDispatch();
   const is_login = useSelector((state) => state.user.is_login);
   const address = useSelector((state) => state.address);
-  const [showNum, setShowNum] = React.useState(12);
-  const [showNum_complete, setShowNum_complete] = React.useState(8);
+  const posts = useSelector((state) => state.post.list);
+  const postsExpired = useSelector((state) => state.post.listExpired);
+  const [showNum, setShowNum] = React.useState(0);
+  const [showNum_complete, setShowNum_complete] = React.useState(0);
   const [modalVisible, setModalVisible] = React.useState(false);
-  const openModal = () => {
-    setModalVisible(true);
-  };
+  const [init, setInit] = React.useState(true);
   const closeModal = () => {
     setModalVisible(false);
   };
 
   React.useEffect(() => {
-    // 포스트 가져오기
-    //
-  }, [showNum]);
+    dispatch(postActions.getPost());
+
+    if (init) {
+      if (posts.length < 12) {
+        setShowNum(posts.length);
+      } else {
+        setShowNum(12);
+      }
+      if (postsExpired.length < 8) {
+        setShowNum_complete(postsExpired.length);
+      } else {
+        setShowNum_complete(8);
+      }
+      setInit(false);
+    }
+  }, []);
 
   const clickMore = () => {
-    if (showNum + 4 < 총게시물) setShowNum(showNum + 4);
+    if (showNum + 4 < posts.length) setShowNum(showNum + 4);
     else {
-      setShowNum(총게시물);
+      setShowNum(posts.length);
     }
-    if (showNum === 총게시물) window.alert("더이상 게시물이 없습니다.");
+    if (showNum === posts.length) window.alert("더이상 게시물이 없습니다.");
   };
 
   const clickMore_complete = () => {
-    if (showNum_complete + 4 < 총게시물)
+    if (showNum_complete + 4 < postsExpired.length)
       setShowNum_complete(showNum_complete + 4);
     else {
-      setShowNum_complete(총게시물);
+      setShowNum_complete(postsExpired.length);
     }
-    if (showNum_complete === 총게시물)
+    if (showNum_complete === postsExpired.length)
       window.alert("더이상 게시물이 없습니다.");
   };
 
   const rendering = () => {
     const result = [];
     for (let i = 0; i < showNum; i++) {
-      result.push(<Post post_id={i} />);
+      result.push(<Post key={posts[i].postId} post={posts[i]} />);
     }
     return result;
   };
@@ -58,7 +67,13 @@ const PostList = (props) => {
   const rendering_complete = () => {
     const result = [];
     for (let i = 0; i < showNum_complete; i++) {
-      result.push(<Post post_id={i} is_progress={false} />);
+      result.push(
+        <Post
+          key={postsExpired[i].postId}
+          post={postsExpired[i]}
+          is_progress={false}
+        />
+      );
     }
     return result;
   };

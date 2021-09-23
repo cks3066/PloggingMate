@@ -1,25 +1,10 @@
 import { createAction, createReducer } from "@reduxjs/toolkit";
 import axios from "axios";
-import moment from "moment";
 
 const initialState = {
   list: [],
-  paging: { start: null, next: null, size: 3 },
+  listExpired: [],
   is_loading: false,
-  address: null,
-};
-
-const initialPost = {
-  id: 0,
-  user_info: {
-    user_name: "on.schan",
-    user_profile: "https://source.unsplash.com/random/1",
-  },
-  //
-  image_url: "https://source.unsplash.com/random/2",
-  contents: "",
-  comment_cnt: 0,
-  insert_dt: moment().format("YYYY-MM-DD hh:mm:ss"),
 };
 
 // 액션
@@ -41,32 +26,54 @@ const thunkTest = (payload) => {
 
 const getPost = (payload) => {
   return function (dispatch, getState) {
+    dispatch(loading(true));
     axios
-      .post("http://localhost:8080/app/sign-in", {})
-      .then((res) => {})
+      .get("http://localhost:8080/app/posts", {
+        headers: {
+          "X-ACCESS-TOKEN": getState().user.jwt,
+        },
+      })
+      .then((res) => {
+        dispatch(setPost(res.data.result));
+      })
       .catch((error) => {
-        window.alert(error.response.data.message);
+        console.log(error.response.data);
       });
   };
 };
 
+const applyPost = (postId) => {
+  return function (dispatch, getState) {
+    console.log("호출");
+    axios
+      .post(
+        `http://localhost:8080/app/posts/${postId}/applications/accounts/auth`,
+        {},
+        {
+          headers: {
+            "X-ACCESS-TOKEN": getState().user.jwt,
+          },
+        }
+      )
+      .then((res) => {
+        dispatch(getPost());
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+};
 // 리듀서
 export default createReducer(initialState, {
   [SET_POST]: (state, action) => {
-    state.list.push(action.payload.post_list);
-    state.paging = action.payload.paging;
+    state.list = action.payload[0];
+    state.listExpired = action.payload[1];
     state.is_loading = false;
-    state.address = action.payload.address;
   },
-  [ADD_POST]: (state, action) => {
-    state.list.unshift(action.payload.post);
-  },
-  [EDIT_POST]: (state, action) => {
-    let idx = state.list.findIndex((p) => p.id === action.payload.post_id);
-    state.list[idx] = { ...state.list[idx], ...action.payload.post };
-  },
+  [ADD_POST]: (state, action) => {},
+  [EDIT_POST]: (state, action) => {},
   [LOADING]: (state, action) => {
-    state.is_loading = action.payload.is_loadging;
+    state.is_loading = action.payload;
   },
 });
 
@@ -75,6 +82,8 @@ const actionCreators = {
   setPost,
   addPost,
   editPost,
+  getPost,
+  applyPost,
 };
 
 export { actionCreators };

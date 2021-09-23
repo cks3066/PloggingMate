@@ -105,7 +105,7 @@ const SignUp = (props) => {
             value={address}
             id="location"
             onChange={(e) => {}}
-            placeholder="주소를 입력해주세요"
+            placeholder="클릭해서 주소를 입력하세요."
           />
           <Input
             required
@@ -314,6 +314,7 @@ const Location = styled.input`
   border-radius: 5px;
   border: 1px solid #838080;
   font-size: 15px;
+  cursor: pointer;
 
   &:focus {
     outline: none;

@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { withRouter } from "react-router";
+import { CloseOutlined } from "@ant-design/icons";
 
 const PostWrite = (props) => {
   const { daum } = window;
@@ -34,7 +35,8 @@ const PostWrite = (props) => {
       <ModalWrapper tabIndex="-1" visible={true}>
         <Posts tabIndex="0">
           <Notice>
-            게시물 작성<GoBack onClick={() => history.goBack()}>X</GoBack>
+            게시물 작성
+            <GoBack onClick={() => history.goBack()} />
           </Notice>
           <Img src="http://via.placeholder.com/400x300" alt="이미지" />
           <Container>
@@ -64,7 +66,6 @@ const PostWrite = (props) => {
             </NoticeText>
             <Line />
             <ContentContainer>
-              {" "}
               <Input_Content
                 rows="3"
                 placeholder="* 소개글을 적어주세요. (40자이내)"
@@ -287,22 +288,11 @@ const Date = styled.input`
   }
 `;
 
-const GoBack = styled.button`
-  border: none;
-  border-radius: 15px;
-  font-size: 15px;
-  padding: 0px;
-  padding-left: 7px;
-  padding-right: 7px;
+const GoBack = styled(CloseOutlined)`
   margin: 0px;
   margin-right: 5px;
-  background-color: #d8dadf;
-  color: #696f78;
   font-weight: bold;
   cursor: pointer;
-  &:hover {
-    background-color: #babcc0;
-  }
 `;
 
 const Line = styled.div`
