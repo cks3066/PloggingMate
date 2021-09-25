@@ -3,12 +3,12 @@ import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { withRouter } from "react-router";
 import { CloseOutlined } from "@ant-design/icons";
+import { actionCreators as postActions } from "../redux/modules/post";
 
 const PostWrite = (props) => {
+  const dispatch = useDispatch();
   const { daum } = window;
   const is_login = useSelector((state) => state.user.is_login);
-  const user = useSelector((state) => state.user.user);
-  const test = useSelector((state) => state.post.location);
   const { history } = props;
   const [title, setTitle] = React.useState("");
   const [content, setContent] = React.useState("");
@@ -17,6 +17,10 @@ const PostWrite = (props) => {
   );
   const [location, setLocation] = React.useState(
     props.location.state === undefined ? "" : props.location.state.location
+  );
+  const [time, setTime] = React.useState("");
+  const [fileUrl, setFileUrl] = React.useState(
+    "http://via.placeholder.com/400x300"
   );
 
   if (!is_login) {
@@ -32,10 +36,40 @@ const PostWrite = (props) => {
           setAddress(data.address);
           setLocation(data.buildingName);
         },
+        onclose: function (state) {
+          if (state === "FORCE_CLOSE") {
+          } else if (state === "COMPLETE_CLOSE") {
+          }
+        },
       }).open();
     }
   };
 
+  const onClickButton = () => {
+    if (title === "") {
+      window.alert("타이틀이 입력되지 않았습니다.");
+    } else if (address === "") {
+      window.alert("주소가 입력되지 않았습니다.");
+    } else if (location === "") {
+      window.alert("상세주소가 입력되지 않았습니다.");
+    } else if (time === "") {
+      window.alert("일정이 입력되지 않았습니다.");
+    } else if (content === "") {
+      window.alert("소개글이 입력되지 않았습니다.");
+    } else {
+      if (window.confirm("게시물을 작성하시겠습니까?")) {
+        dispatch(
+          postActions.addPost(title, address, location, time, content, history)
+        );
+      }
+    }
+  };
+
+  const processImage = (e) => {
+    const imageFile = e.target.files[0];
+    const imageUrl = URL.createObjectURL(imageFile);
+    setFileUrl(imageUrl);
+  };
   return (
     <Body>
       <ModalOverlay visible={true} />
@@ -45,11 +79,26 @@ const PostWrite = (props) => {
             게시물 작성
             <GoBack onClick={() => history.goBack()} />
           </Notice>
-          <Img src="http://via.placeholder.com/400x300" alt="이미지" />
+          <input
+            type="file"
+            id="file"
+            onChange={processImage}
+            style={{ display: "none" }}
+            accept="image/*"
+          />
+          <Img
+            src={fileUrl}
+            alt="이미지"
+            onClick={(e) => {
+              e.preventDefault();
+              document.getElementById("file").click();
+            }}
+          />
           <Container>
             <Title>
               <Input
-                title
+                type="text"
+                required
                 placeholder="* 타이틀을 적어주세요."
                 onChange={(e) => setTitle(e.target.value)}
                 maxLength="14"
@@ -63,17 +112,26 @@ const PostWrite = (props) => {
                   : `${address}`}
               </Location>
             </NoticeText>
-            <Input_Location
+            <InputLocation
               placeholder="* 상세 위치 ex) ○○공원"
               maxLength="14"
-              value={location === "" ? "" : location}
+              onChange={(e) => {
+                setLocation(e.target.value);
+              }}
             />
             <NoticeText>
-              일정 : <Date type="datetime-local" />
+              일정 :{" "}
+              <Date
+                type="datetime-local"
+                onChange={(e) => {
+                  setTime(e.target.value);
+                }}
+                required
+              />
             </NoticeText>
             <Line />
             <ContentContainer>
-              <Input_Content
+              <InputContent
                 rows="3"
                 placeholder="* 소개글을 적어주세요. (40자이내)"
                 maxLength="40"
@@ -84,14 +142,14 @@ const PostWrite = (props) => {
               * 게시물에 욕설 및 비방을 포함하거나 게시물의 악용 시 삭제 조치 및
               서비스 이용에 제한이 있을 수 있습니다.
             </Warning>
-            <Participation>작성 완료</Participation>
+            <Participation onClick={onClickButton}>작성 완료</Participation>
           </Container>
         </Posts>
       </ModalWrapper>
     </Body>
   );
 };
-
+const FileInput = styled.input``;
 const ModalWrapper = styled.div`
   box-sizing: border-box;
   display: ${(props) => (props.visible ? "block" : "none")};
@@ -181,7 +239,7 @@ const Container = styled.div`
   margin: 10px 0px 10px 15px;
 `;
 
-const Input = styled.input.attrs({ required: true })`
+const Input = styled.input`
   width: 100%;
   border: none;
   font-size: 24px;
@@ -206,7 +264,7 @@ const Input = styled.input.attrs({ required: true })`
   }
 `;
 
-const Input_Location = styled.input.attrs({ required: true })`
+const InputLocation = styled.input`
   width: 80%;
   border: none;
   border-bottom: 1px solid gray;
@@ -233,7 +291,7 @@ const Input_Location = styled.input.attrs({ required: true })`
   }
 `;
 
-const Input_Content = styled.textarea.attrs({ required: true })`
+const InputContent = styled.textarea.attrs({ required: true })`
   width: 100%;
   border: none;
   font-size: 17px;

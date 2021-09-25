@@ -9,14 +9,10 @@ const initialState = {
 
 // 액션
 const SET_POST = "post/SET_POST";
-const ADD_POST = "post/ADD_POST";
-const EDIT_POST = "post/EDIT_POST";
 const LOADING = "post/LOADING";
 
 // 액션 크리에이터
 const setPost = createAction(SET_POST);
-const addPost = createAction(ADD_POST);
-const editPost = createAction(EDIT_POST);
 const loading = createAction(LOADING);
 
 // thunk middleware- 함수형 액션
@@ -44,7 +40,6 @@ const getPost = (payload) => {
 
 const applyPost = (postId) => {
   return function (dispatch, getState) {
-    console.log("호출");
     axios
       .post(
         `http://localhost:8080/app/posts/${postId}/applications/accounts/auth`,
@@ -55,11 +50,37 @@ const applyPost = (postId) => {
           },
         }
       )
-      .then((res) => {
-        dispatch(getPost());
+      .then((res) => {})
+      .catch((error) => {
+        console.dir(error);
+      });
+  };
+};
+
+const addPost = (title, address, location, time, content, history) => {
+  return function (dispatch, getState) {
+    axios
+      .post(
+        `http://localhost:8080/app/posts/`,
+        {
+          contents: title,
+          reservedAt: time,
+          totalApplyCount: 5,
+          name: location,
+          address: address,
+        },
+        {
+          headers: {
+            "X-ACCESS-TOKEN": getState().user.jwt,
+          },
+        }
+      )
+      .then(async (res) => {
+        console.log(res);
+        history.goBack();
       })
       .catch((error) => {
-        console.log(error);
+        console.dir(error);
       });
   };
 };
@@ -70,8 +91,6 @@ export default createReducer(initialState, {
     state.listExpired = action.payload[1];
     state.is_loading = false;
   },
-  [ADD_POST]: (state, action) => {},
-  [EDIT_POST]: (state, action) => {},
   [LOADING]: (state, action) => {
     state.is_loading = action.payload;
   },
@@ -81,7 +100,6 @@ export default createReducer(initialState, {
 const actionCreators = {
   setPost,
   addPost,
-  editPost,
   getPost,
   applyPost,
 };

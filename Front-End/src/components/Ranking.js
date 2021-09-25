@@ -5,6 +5,7 @@ import {
   TrophyTwoTone,
   CrownFilled,
 } from "@ant-design/icons";
+import axios from "axios";
 
 const dummy = [
   { rank: 1, id: "on_schan", count: 17 },
@@ -32,15 +33,16 @@ const Ranking = (props) => {
     rankButton = document.getElementById("RankButton");
     rankButton.style.display = "block";
   };
+  const [rank, setRank] = React.useState([]);
   const now = new Date();
   const month = now.getMonth() + 1;
   const rendering = () => {
     const result = [];
-    dummy.map((item, index) => {
+    rank.map((item, index) => {
       result.push(
         <Elem key={index}>
           <Rank>
-            {item.rank === 1 ? (
+            {index === 0 ? (
               <>
                 <CrownFilled
                   style={{
@@ -50,10 +52,10 @@ const Ranking = (props) => {
                 />
               </>
             ) : (
-              <> {item.rank}등</>
+              <> {index + 1}등</>
             )}
           </Rank>
-          <ID>{item.id}</ID>
+          <ID>{item.nickname}</ID>
           <Count>{item.count}</Count>
         </Elem>
       );
@@ -61,6 +63,16 @@ const Ranking = (props) => {
     return result;
   };
 
+  React.useEffect(() => {
+    axios
+      .get("http://localhost:8080/app/accounts/rankings", {})
+      .then((res) => {
+        setRank(res.data.result);
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+      });
+  }, []);
   return (
     <>
       <RankButton onClick={onClick} id="RankButton">
