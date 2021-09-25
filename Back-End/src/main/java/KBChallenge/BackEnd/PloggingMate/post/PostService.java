@@ -1,5 +1,6 @@
 package KBChallenge.BackEnd.PloggingMate.post;
 
+import KBChallenge.BackEnd.PloggingMate.account.AccountRepository;
 import KBChallenge.BackEnd.PloggingMate.account.entity.Account;
 import KBChallenge.BackEnd.PloggingMate.configure.response.exception.CustomException;
 import KBChallenge.BackEnd.PloggingMate.configure.response.exception.CustomExceptionStatus;
@@ -32,25 +33,26 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final NaverGeocode naverGeocode;
-    private final NaverDirection5 naverDirection5;
     private final AccountPostRelationRepository accountPostRelationRepository;
     private final ParkRepository parkRepository;
+    private final AccountRepository accountRepository;
 
     @Transactional(readOnly = true)
     public List<List<PostListRes>> getPostList(CustomUserDetails customUserDetails) {
         List<List<PostListRes>> ans = new ArrayList<>();
         List<PostListRes> list = postRepository.getNoAuthPostListAvailable();
-        if(customUserDetails ==null) ans.add(list);
-        else{
-            Account account = customUserDetails.getAccount();
-            String accountCoordinate = naverGeocode.getCoordinate(account.getAddress());
-            for (PostListRes postListRes : list) {
-                String parkCoordinate = naverGeocode.getCoordinate(postListRes.getAddress());
-                postListRes.setDist(naverDirection5.getDistance(accountCoordinate, parkCoordinate));
-            }
-            Collections.sort(list);
-            ans.add(list);
-        }
+        ans.add(list);
+//        if(customUserDetails ==null) ans.add(list);
+//        else{
+//            Account account = customUserDetails.getAccount();
+//            String accountCoordinate = naverGeocode.getCoordinate(account.getAddress());
+//            for (PostListRes postListRes : list) {
+//                String parkCoordinate = naverGeocode.getCoordinate(postListRes.getAddress());
+//                postListRes.setDist(naverDirection5.getDistance(accountCoordinate, parkCoordinate));
+//            }
+//            Collections.sort(list);
+//            ans.add(list);
+//        }
         List<PostListRes> notAvailableList = postRepository.getNoAuthPostListNotAvailable();
         ans.add(notAvailableList);
         return ans;
@@ -59,13 +61,16 @@ public class PostService {
     public void chooseOrCancelApplications(Long postId, CustomUserDetails customUserDetails) {
         Post post = postRepository.findByStatusAndPostId(VALID, postId)
                 .orElseThrow(() -> new CustomException(CustomExceptionStatus.POST_NOT_FOUND));
-        Account account = customUserDetails.getAccount();
+        String username = customUserDetails.getUsername();
+        Account account = accountRepository.findByEmailAndStatus(username, VALID)
+                .orElseThrow(() -> new CustomException(CustomExceptionStatus.ACCOUNT_NOT_FOUND));
         Optional<AccountPostRelation> optional
                 = accountPostRelationRepository.findByAccountAndPostAndStatus(account, post, VALID);
         if (optional.isPresent()){
             AccountPostRelation accountPostRelation = optional.get();
             accountPostRelation.toggleIsLike();
             post.changeApplyCount(accountPostRelation.getIsLike());
+            account.controlParticipationCount(accountPostRelation.getIsLike());
         }
 
         else{
@@ -73,6 +78,7 @@ public class PostService {
             AccountPostRelation save = accountPostRelationRepository.save(accountPostRelation);
             post.getApplicants().add(save);
             post.changeApplyCount(true);
+            account.controlParticipationCount(true);
         }
         if (post.getApplyCount() > post.getTotalApplyCount())
             throw new CustomException(CustomExceptionStatus.POST_OVER_APPLICANT);
@@ -81,10 +87,18 @@ public class PostService {
 
     public Long createPost(CreatePostReq createPostReq, CustomUserDetails customUserDetails) {
         Account account = customUserDetails.getAccount();
-        Park park = parkRepository.findByParkIdAndStatus(createPostReq.getParkId(), VALID)
-                .orElseThrow(() -> new CustomException(CustomExceptionStatus.PARK_NOT_FOUND));
-        Post post = new Post(createPostReq, account, park);
-        Post save = postRepository.save(post);
-        return save.getPostId();
+        if (createPostReq.getParkId() != null) {
+            Park park = parkRepository.findByParkIdAndStatus(createPostReq.getParkId(), VALID)
+                    .orElseThrow(() -> new CustomException(CustomExceptionStatus.PARK_NOT_FOUND));
+            Post post = new Post(createPostReq, account, park);
+            Post save = postRepository.save(post);
+            return save.getPostId();
+        }
+        else {
+            naverGeocode.getCoordinate(createPostReq.getAddress());
+            Post post = new Post(createPostReq, account);
+            Post save = postRepository.save(post);
+            return save.getPostId();
+        }
     }
 }

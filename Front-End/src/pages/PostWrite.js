@@ -8,11 +8,16 @@ const PostWrite = (props) => {
   const { daum } = window;
   const is_login = useSelector((state) => state.user.is_login);
   const user = useSelector((state) => state.user.user);
+  const test = useSelector((state) => state.post.location);
   const { history } = props;
   const [title, setTitle] = React.useState("");
   const [content, setContent] = React.useState("");
-  const [address, setAddress] = React.useState("");
-  const [location, setLocation] = React.useState("");
+  const [address, setAddress] = React.useState(
+    props.location.state === undefined ? "" : props.location.state.address
+  );
+  const [location, setLocation] = React.useState(
+    props.location.state === undefined ? "" : props.location.state.location
+  );
 
   if (!is_login) {
     window.alert("로그인 후 이용가능합니다.");
@@ -21,12 +26,14 @@ const PostWrite = (props) => {
   }
 
   const onClickAddress = () => {
-    new daum.Postcode({
-      oncomplete: function (data) {
-        setAddress(data.address);
-        setLocation(data.buildingName);
-      },
-    }).open();
+    if (address === "") {
+      new daum.Postcode({
+        oncomplete: function (data) {
+          setAddress(data.address);
+          setLocation(data.buildingName);
+        },
+      }).open();
+    }
   };
 
   return (
@@ -51,15 +58,15 @@ const PostWrite = (props) => {
             <NoticeText>
               위치 :{" "}
               <Location onClick={onClickAddress}>
-                {address == ""
+                {address === ""
                   ? "* 주소를 검색하려면 클릭하세요"
                   : `${address}`}
-                {location !== "" ? `(${location})` : null}
               </Location>
             </NoticeText>
             <Input_Location
               placeholder="* 상세 위치 ex) ○○공원"
               maxLength="14"
+              value={location === "" ? "" : location}
             />
             <NoticeText>
               일정 : <Date type="datetime-local" />

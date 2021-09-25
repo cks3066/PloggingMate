@@ -6,9 +6,11 @@ import PostWrite from "../pages/PostWrite";
 import { Link } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
-import { actionCreators as postActions } from "../redux/modules/user";
+import { actionCreators as postActions } from "../redux/modules/post";
 
 import { withRouter } from "react-router";
+
+import { connect } from "react-redux";
 
 import "../scss/MapContainer.scss";
 
@@ -21,7 +23,6 @@ const MapContainer = ({ searchPlace }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log(searchPlace);
     const container = document.getElementById("map");
     const options = {
       center: new kakao.maps.LatLng(37.566826, 126.9786567),
@@ -60,13 +61,11 @@ const MapContainer = ({ searchPlace }) => {
       });
       kakao.maps.event.addListener(marker, "click", () => {
         // 마커를 클릭하면 장소명이 인포윈도우에 표출
-        console.log("marker click");
         setModalVisible(true);
         setLoctaion(place.place_name);
         geocoder.coord2RegionCode(place.x, place.y, (result, status) => {
           if (status === kakao.maps.services.Status.OK) {
-            console.log(result[0].address_name);
-            setAddress("hello address");
+            setAddress(result[0].address_name);
           }
         });
       });
@@ -154,8 +153,14 @@ const MapContainer = ({ searchPlace }) => {
             <button className="btn later" onClick={closeModal}>
               나중에 할게요!
             </button>
-            <Link to="/postwrite" className="link btn go">
-              {}글 작성하기
+            <Link
+              to={{
+                pathname: "/postwrite",
+                state: { address, location },
+              }}
+              className="link btn go"
+            >
+              {console.log(address)}글 작성하기
             </Link>
           </div>
         </Modal>

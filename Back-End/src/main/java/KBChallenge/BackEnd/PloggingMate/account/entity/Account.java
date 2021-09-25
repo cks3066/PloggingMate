@@ -4,6 +4,7 @@ import KBChallenge.BackEnd.PloggingMate.account.RoleType;
 import KBChallenge.BackEnd.PloggingMate.account.dto.AccountAuthDto;
 import KBChallenge.BackEnd.PloggingMate.configure.entity.BaseTimeEntity;
 import KBChallenge.BackEnd.PloggingMate.configure.entity.Status;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -40,6 +41,13 @@ public class Account extends BaseTimeEntity {
 
     private String address;
 
+    private int participationCount;
+
+    public void controlParticipationCount(Boolean isLike) {
+        if (isLike) this.participationCount++;
+        else this.participationCount--;
+    }
+
     public static Account createAccount(AccountAuthDto dto) {
 
         return Account.builder()
@@ -49,6 +57,7 @@ public class Account extends BaseTimeEntity {
                 .address(dto.getAddress())
                 .status(VALID)
                 .role(RoleType.ROLE_USER)
+                .participationCount(0)
                 .build();
     }
 

@@ -14,6 +14,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -38,6 +39,12 @@ public class AccountController {
     @GetMapping(value = "/accounts/auth")
     public DataResponse<AccountAuthDto> getAuthAccount(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
         return responseService.getDataResponse(accountService.getAuthAccount(customUserDetails));
+    }
+
+    @GetMapping(value = "/accounts/rankings")
+    public DataResponse<List<AccountAuthDto>> getAccountRankingList() {
+        List<AccountAuthDto> list = accountService.getAccountRankingList();
+        return responseService.getDataResponse(list);
     }
 
 }

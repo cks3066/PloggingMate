@@ -81,7 +81,6 @@ const Home = () => {
     }
   }, []);
 
-
   return (
     <Container>
       <Jumbotron></Jumbotron>

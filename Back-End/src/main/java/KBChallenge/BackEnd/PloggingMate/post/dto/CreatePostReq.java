@@ -19,10 +19,13 @@ public class CreatePostReq {
 
     private LocalDateTime reservedAt;
 
-    @NotNull
     private Long parkId;
 
     @NotNull
     private Integer totalApplyCount;
+
+    private String name;
+
+    private String address;
 
 }

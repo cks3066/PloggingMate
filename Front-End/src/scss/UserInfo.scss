@@ -6,6 +6,7 @@ $color-main: #3fc556;
   margin: 10px 20px;
   border: none;
   transition: 0.2s;
+  cursor: pointer;
   &.btn-change,
   &.btn-modify {
     background-color: $color-main;
@@ -22,6 +23,21 @@ $color-main: #3fc556;
 
     &:hover {
       background-color: #d3d3d3;
+    }
+  }
+}
+
+.modal-container {
+  .inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    .icon {
+      position: absolute;
+      cursor: pointer;
+      top: 10px;
+      right: 10px;
     }
   }
 }
@@ -47,6 +63,11 @@ $color-main: #3fc556;
       .btn-container {
         display: flex;
         flex-direction: column;
+
+        .link {
+          text-decoration: none;
+          color: #000;
+        }
       }
     }
 

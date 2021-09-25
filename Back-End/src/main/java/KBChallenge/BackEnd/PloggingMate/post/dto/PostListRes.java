@@ -1,5 +1,6 @@
 package KBChallenge.BackEnd.PloggingMate.post.dto;
 
+import KBChallenge.BackEnd.PloggingMate.post.entity.AccountPostRelation;
 import KBChallenge.BackEnd.PloggingMate.post.entity.Post;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
@@ -51,7 +52,7 @@ public class PostListRes implements Comparable<PostListRes>{
         this.applyCount = post.getApplyCount();
         this.parkId = post.getPark().getParkId();
         this.parkName = post.getPark().getName();
-        accounts = post.getApplicants().stream().map(ApplicantRes::new).collect(Collectors.toList());
+        accounts = post.getApplicants().stream().filter(AccountPostRelation::getIsLike).map(ApplicantRes::new).collect(Collectors.toList());
     }
 
 }

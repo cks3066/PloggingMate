@@ -14,6 +14,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 import static KBChallenge.BackEnd.PloggingMate.configure.entity.Status.VALID;
 
 
@@ -64,4 +66,8 @@ public class AccountService {
         return new AccountAuthDto(account);
     }
 
+    public List<AccountAuthDto> getAccountRankingList() {
+        List<AccountAuthDto> list = accountRepository.findAllByStatusOrderByParticipationCountDesc(VALID);
+        return list;
+    }
 }

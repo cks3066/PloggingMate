@@ -41,10 +41,11 @@ public class Post extends BaseTimeEntity {
 
     private Integer totalApplyCount;
 
-    public void changeApplyCount(Boolean isLike) {
-        if (isLike) this.applyCount++;
-        else this.applyCount--;
-    }
+    private String parkName;
+
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "accountId")
+    private Account account;
 
     @ManyToOne(fetch = LAZY, cascade = ALL)
     @JoinColumn(name = "parkId")
@@ -53,14 +54,33 @@ public class Post extends BaseTimeEntity {
     @OneToMany(mappedBy = "post")
     private List<AccountPostRelation> applicants = new ArrayList<>();
 
-    public Post(CreatePostReq createPostReq, Account account, Park park){
+    public void changeApplyCount(Boolean isLike) {
+        if (isLike) this.applyCount++;
+        else this.applyCount--;
+    }
+
+    public Post(CreatePostReq createPostReq, Account account, Park park) {
         this.status = VALID;
         this.contents = createPostReq.getContents();
         this.reservedAt = createPostReq.getReservedAt();
-        this.address = park.getAddress();
         this.applyCount = 0;
         this.totalApplyCount = createPostReq.getTotalApplyCount();
+        this.account = account;
         this.park = park;
+        this.parkName = park.getName();
+        this.address = park.getAddress();
+    }
+
+    public Post(CreatePostReq createPostReq, Account account) {
+        this.status = VALID;
+        this.contents = createPostReq.getContents();
+        this.reservedAt = createPostReq.getReservedAt();
+        this.applyCount = 0;
+        this.totalApplyCount = createPostReq.getTotalApplyCount();
+        this.account = account;
+        this.park = null;
+        this.parkName = createPostReq.getName();
+        this.address = createPostReq.getAddress();
     }
 
 }

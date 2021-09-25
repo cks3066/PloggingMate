@@ -5,8 +5,8 @@ function Footer() {
   return (
     <>
       <CopyRight>
-        {new Date().getFullYear()} &copy; Team PloggingMate. All Rights
-        Reserved.
+        CopyRight &copy; {new Date().getFullYear()} Team PloggingMate. All
+        Rights Reserved.
       </CopyRight>
     </>
   );

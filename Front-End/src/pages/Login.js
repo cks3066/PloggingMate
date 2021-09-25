@@ -13,9 +13,7 @@ const Login = ({ history }) => {
 
   if (is_login) history.goBack();
   return (
-
     <Body>
-
       {!is_login && (
         <Card>
           <Logo>
@@ -76,9 +74,7 @@ const Login = ({ history }) => {
           </Form>
         </Card>
       )}
-
     </Body>
-
   );
 };
 
