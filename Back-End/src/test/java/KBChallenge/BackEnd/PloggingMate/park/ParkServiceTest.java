@@ -1,7 +1,8 @@
-package KBChallenge.BackEnd.PloggingMate.park.entity;
+package KBChallenge.BackEnd.PloggingMate.park;
 
 import KBChallenge.BackEnd.PloggingMate.configure.response.exception.CustomException;
 import KBChallenge.BackEnd.PloggingMate.configure.response.exception.CustomExceptionStatus;
+import KBChallenge.BackEnd.PloggingMate.park.entity.Park;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

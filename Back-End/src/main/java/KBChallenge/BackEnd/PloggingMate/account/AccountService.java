@@ -8,11 +8,14 @@ import KBChallenge.BackEnd.PloggingMate.configure.response.exception.CustomExcep
 import KBChallenge.BackEnd.PloggingMate.configure.response.exception.CustomExceptionStatus;
 import KBChallenge.BackEnd.PloggingMate.configure.security.authentication.CustomUserDetails;
 import KBChallenge.BackEnd.PloggingMate.configure.security.jwt.JwtTokenProvider;
+import KBChallenge.BackEnd.PloggingMate.util.uploader.FirebaseFileService;
 import KBChallenge.BackEnd.PloggingMate.util.location.NaverGeocode;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -22,12 +25,14 @@ import static KBChallenge.BackEnd.PloggingMate.configure.entity.Status.VALID;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 @Service
+@Slf4j // temp
 public class AccountService {
 
     private final AccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
     private final NaverGeocode naverGeocode;
+    private final FirebaseFileService fileService;
 
     @Transactional
     public AccountAuthDto signUp(AccountAuthDto dto) {
@@ -69,5 +74,20 @@ public class AccountService {
     public List<AccountAuthDto> getAccountRankingList() {
         List<AccountAuthDto> list = accountRepository.findAllByStatusOrderByParticipationCountDesc(VALID);
         return list;
+    }
+
+    @Transactional
+    public String changeMyProfile(MultipartFile file, CustomUserDetails customUserDetails) {
+
+        Account account = accountRepository.findById(customUserDetails.getAccount().getAccountId())
+                .orElseThrow(()-> new CustomException(CustomExceptionStatus.FAILED_TO_LOGIN));
+
+        if (account.getProfileImage() != null)
+            fileService.deleteFile(account.getProfileImage());
+
+        String profileUri = fileService.upload(file);
+        account.changeProfileImage(profileUri);
+
+        return profileUri;
     }
 }

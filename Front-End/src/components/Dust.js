@@ -101,6 +101,7 @@ const Dust = (props) => {
         .get(dustURL)
         .then((res) => {
           setDustData(res.data.result);
+          console.log("data", res.data.result);
           setIsLoading(false);
         })
         .catch((error) => {
@@ -127,18 +128,30 @@ const Dust = (props) => {
               <TitleEl>미세먼지 정보</TitleEl>
               <Ment>플로깅 가기 전에 먼저 미세먼지를 확인하세요</Ment>
             </Title>
-            <NotiGrade grade={dustData.khaiGrade} />
+            {!!dustData.khaiGrade ? (
+              <NotiGrade grade={dustData.khaiGrade} />
+            ) : (
+              <p>통합지수 데이터를 불러올 수 없습니다.</p>
+            )}
             <Container>
-              <Grade
-                grade={dustData.khaiGrade}
-                value={dustData.khaiValue}
-                label="통합지수"
-              />
-              <Grade
-                grade={dustData.pm10Grade}
-                value={dustData.pm10Value}
-                label="미세먼지"
-              />
+              {!!dustData.khaiGrade ? (
+                <Grade
+                  grade={dustData.khaiGrade}
+                  value={dustData.khaiValue}
+                  label="통합지수"
+                />
+              ) : (
+                <p>통합지수 없음</p>
+              )}
+              {!!dustData.pm10Grade ? (
+                <Grade
+                  grade={dustData.pm10Grade}
+                  value={dustData.pm10Value}
+                  label="미세먼지"
+                />
+              ) : (
+                <p>미세먼지 없음</p>
+              )}
             </Container>
             <div>
               <Location>

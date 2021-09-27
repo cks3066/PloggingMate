@@ -2,8 +2,6 @@ package KBChallenge.BackEnd.PloggingMate.park.entity;
 
 import KBChallenge.BackEnd.PloggingMate.configure.entity.BaseTimeEntity;
 import KBChallenge.BackEnd.PloggingMate.configure.entity.Status;
-import KBChallenge.BackEnd.PloggingMate.park.entity.dto.CreateParkReq;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

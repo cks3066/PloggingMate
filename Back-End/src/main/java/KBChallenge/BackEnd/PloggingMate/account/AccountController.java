@@ -1,6 +1,5 @@
 package KBChallenge.BackEnd.PloggingMate.account;
 
-
 import KBChallenge.BackEnd.PloggingMate.account.dto.AccountAuthDto;
 import KBChallenge.BackEnd.PloggingMate.account.dto.SignInReq;
 import KBChallenge.BackEnd.PloggingMate.account.dto.SignInRes;
@@ -12,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -45,6 +45,11 @@ public class AccountController {
     public DataResponse<List<AccountAuthDto>> getAccountRankingList() {
         List<AccountAuthDto> list = accountService.getAccountRankingList();
         return responseService.getDataResponse(list);
+    }
+
+    @PatchMapping(value = "/accounts/profile")
+    public DataResponse<?> changeMyProfile(@RequestPart("file") MultipartFile file, @AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        return responseService.getDataResponse(accountService.changeMyProfile(file, customUserDetails));
     }
 
 }

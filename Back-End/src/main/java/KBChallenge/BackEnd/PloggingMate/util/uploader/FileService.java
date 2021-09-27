@@ -1,4 +1,4 @@
-package KBChallenge.BackEnd.PloggingMate.util;
+package KBChallenge.BackEnd.PloggingMate.util.uploader;
 
 import org.springframework.web.multipart.MultipartFile;
 

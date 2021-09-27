@@ -105,7 +105,6 @@ const PostWrite = (props) => {
               document.getElementById("file").click();
             }}
           />
-
           <Container>
             <Title>
               <Input

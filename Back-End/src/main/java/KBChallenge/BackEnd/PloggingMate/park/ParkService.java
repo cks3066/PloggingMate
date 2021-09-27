@@ -1,10 +1,11 @@
-package KBChallenge.BackEnd.PloggingMate.park.entity;
+package KBChallenge.BackEnd.PloggingMate.park;
 
 import KBChallenge.BackEnd.PloggingMate.configure.response.exception.CustomException;
 import KBChallenge.BackEnd.PloggingMate.configure.response.exception.CustomExceptionStatus;
-import KBChallenge.BackEnd.PloggingMate.park.entity.dto.CreateParkReq;
-import KBChallenge.BackEnd.PloggingMate.park.entity.dto.CreateParkRes;
-import KBChallenge.BackEnd.PloggingMate.util.FirebaseFileService;
+import KBChallenge.BackEnd.PloggingMate.park.dto.CreateParkRes;
+import KBChallenge.BackEnd.PloggingMate.park.dto.CreateParkReq;
+import KBChallenge.BackEnd.PloggingMate.park.entity.Park;
+import KBChallenge.BackEnd.PloggingMate.util.uploader.FirebaseFileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

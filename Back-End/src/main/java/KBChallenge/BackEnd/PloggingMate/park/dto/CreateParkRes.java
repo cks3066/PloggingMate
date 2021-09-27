@@ -1,4 +1,4 @@
-package KBChallenge.BackEnd.PloggingMate.park.entity.dto;
+package KBChallenge.BackEnd.PloggingMate.park.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

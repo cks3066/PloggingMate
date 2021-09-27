@@ -48,6 +48,10 @@ public class Account extends BaseTimeEntity {
         else this.participationCount--;
     }
 
+    public void changeProfileImage(String profileImage) {
+        this.profileImage = profileImage;
+    }
+
     public static Account createAccount(AccountAuthDto dto) {
 
         return Account.builder()

@@ -33,7 +33,7 @@ class MicrodustControllerTest {
         userParam.add("tmX","212260.30360800");
         userParam.add("tmY","455168.10145573");
 
-        mockMvc.perform(get("/app/v1/microdust")
+        mockMvc.perform(get("/app/microdust")
                         .params(userParam)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -45,7 +45,7 @@ class MicrodustControllerTest {
     @Test
     public void testGetMicrodustInfoApiIfTmParamsNoPresent() throws Exception {
 
-        mockMvc.perform(get("/app/v1/microdust")
+        mockMvc.perform(get("/app/microdust")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                         .andExpect(status().isBadRequest())

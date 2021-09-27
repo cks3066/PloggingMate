@@ -6,21 +6,19 @@ import KBChallenge.BackEnd.PloggingMate.configure.response.exception.CustomExcep
 import KBChallenge.BackEnd.PloggingMate.configure.response.exception.CustomExceptionStatus;
 import KBChallenge.BackEnd.PloggingMate.configure.security.authentication.CustomUserDetails;
 import KBChallenge.BackEnd.PloggingMate.park.entity.Park;
-import KBChallenge.BackEnd.PloggingMate.park.entity.ParkRepository;
+import KBChallenge.BackEnd.PloggingMate.park.ParkRepository;
 import KBChallenge.BackEnd.PloggingMate.post.dto.PostListRes;
 import KBChallenge.BackEnd.PloggingMate.post.entity.AccountPostRelation;
 import KBChallenge.BackEnd.PloggingMate.post.dto.CreatePostReq;
 import KBChallenge.BackEnd.PloggingMate.post.entity.Post;
 import KBChallenge.BackEnd.PloggingMate.post.repository.AccountPostRelationRepository;
 import KBChallenge.BackEnd.PloggingMate.post.repository.PostRepository;
-import KBChallenge.BackEnd.PloggingMate.util.location.NaverDirection5;
 import KBChallenge.BackEnd.PloggingMate.util.location.NaverGeocode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
