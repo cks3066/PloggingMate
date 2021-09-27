@@ -50,7 +50,9 @@ const applyPost = (postId) => {
           },
         }
       )
-      .then((res) => {})
+      .then((res) => {
+        dispatch(getPost(res.data.result));
+      })
       .catch((error) => {
         console.dir(error);
       });
@@ -59,62 +61,41 @@ const applyPost = (postId) => {
 
 const addPost = (title, address, location, time, content, file, history) => {
   return function (dispatch, getState) {
-    const formData = new FormData();
-    var contents = {
-      name: "제102호 어린이공원",
-      address: "경기도 용인시 수지구 죽전동 1484번지 일원",
-    };
-    formData.append("file", file);
-    formData.append("content", contents);
     axios
-      .post("http://localhost:8080/app/park", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          "X-ACCESS-TOKEN": getState().user.jwt,
-          withCredentials: true,
+      .post(
+        `http://localhost:8080/app/posts/`,
+        {
+          contents: title,
+          reservedAt: time,
+          totalApplyCount: 5,
+          name: location,
+          address: address,
         },
-      })
-      .then((res) => {
-        console.log(res);
+        {
+          headers: {
+            "X-ACCESS-TOKEN": getState().user.jwt,
+          },
+        }
+      )
+      .then(async (res) => {
+        history.goBack();
       })
       .catch((error) => {
         console.dir(error);
       });
   };
-  //   axios
-  //     .post(
-  //       `http://localhost:8080/app/posts/`,
-  //       {
-  //         contents: title,
-  //         reservedAt: time,
-  //         totalApplyCount: 5,
-  //         name: location,
-  //         address: address,
-  //       },
-  //       {
-  //         headers: {
-  //           "X-ACCESS-TOKEN": getState().user.jwt,
-  //         },
-  //       }
-  //     )
-  //     .then(async (res) => {
-  //       console.log(res);
-  //       history.goBack();
-  //     })
-  //     .catch((error) => {
-  //       console.dir(error);
-  //     });
-  // };
 };
 // 리듀서
 export default createReducer(initialState, {
   [SET_POST]: (state, action) => {
-    state.list = action.payload[0];
-    state.listExpired = action.payload[1];
+    if (state.list !== action.payload[0]) state.list = action.payload[0];
+    if (state.listExpired !== action.payload[1])
+      state.listExpired = action.payload[1];
     state.is_loading = false;
   },
   [LOADING]: (state, action) => {
     state.is_loading = action.payload;
+    console.log(state.is_loading);
   },
 });
 

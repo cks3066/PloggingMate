@@ -6,7 +6,7 @@ import user from "./modules/user";
 import img from "./modules/img";
 import post from "./modules/post";
 import { persistReducer } from "redux-persist";
-import storage from "redux-persist/lib/storage";
+import storageSession from "redux-persist/lib/storage/session";
 import { combineReducers } from "redux";
 
 // 루트리듀서
@@ -20,7 +20,7 @@ const rootReducer = combineReducers({
 // redux-persist
 const persistConfig = {
   key: "root",
-  storage,
+  storage: storageSession,
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

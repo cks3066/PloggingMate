@@ -48,31 +48,31 @@ const PostWrite = (props) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    // if (title === "") {
-    //   window.alert("타이틀이 입력되지 않았습니다.");
-    // } else if (address === "") {
-    //   window.alert("주소가 입력되지 않았습니다.");
-    // } else if (location === "") {
-    //   window.alert("상세주소가 입력되지 않았습니다.");
-    // } else if (time === "") {
-    //   window.alert("일정이 입력되지 않았습니다.");
-    // } else if (content === "") {
-    //   window.alert("소개글이 입력되지 않았습니다.");
-    // } else {
-    if (window.confirm("게시물을 작성하시겠습니까?")) {
-      dispatch(
-        postActions.addPost(
-          title,
-          address,
-          location,
-          time,
-          content,
-          file,
-          history
-        )
-      );
+    if (title === "") {
+      window.alert("타이틀이 입력되지 않았습니다.");
+    } else if (address === "") {
+      window.alert("주소가 입력되지 않았습니다.");
+    } else if (location === "") {
+      window.alert("상세주소가 입력되지 않았습니다.");
+    } else if (time === "") {
+      window.alert("일정이 입력되지 않았습니다.");
+    } else if (content === "") {
+      window.alert("소개글이 입력되지 않았습니다.");
+    } else {
+      if (window.confirm("게시물을 작성하시겠습니까?")) {
+        dispatch(
+          postActions.addPost(
+            title,
+            address,
+            location,
+            time,
+            content,
+            file,
+            history
+          )
+        );
+      }
     }
-    // }
   };
 
   const processImage = (e) => {

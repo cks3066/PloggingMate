@@ -35,6 +35,21 @@ const SignUp = (props) => {
       },
     }).open();
   };
+  const onFocusAddress = () => {
+    if (address === "") {
+      new daum.Postcode({
+        oncomplete: function (data) {
+          setAddress(data.address);
+          document.getElementById("location").style.backgroundColor = "#e8f7ea";
+        },
+        onclose: function (state) {
+          if (state === "FORCE_CLOSE") {
+          } else if (state === "COMPLETE_CLOSE") {
+          }
+        },
+      }).open();
+    }
+  };
 
   return (
     <Body>
@@ -105,6 +120,7 @@ const SignUp = (props) => {
             value={address}
             id="location"
             onChange={(e) => {}}
+            onFocus={onFocusAddress}
             placeholder="클릭해서 주소를 입력하세요."
           />
           <Input
