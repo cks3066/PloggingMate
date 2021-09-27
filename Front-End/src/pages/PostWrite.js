@@ -22,6 +22,7 @@ const PostWrite = (props) => {
   const [fileUrl, setFileUrl] = React.useState(
     "http://via.placeholder.com/400x300"
   );
+  const [file, setFile] = React.useState();
 
   if (!is_login) {
     window.alert("로그인 후 이용가능합니다.");
@@ -45,28 +46,38 @@ const PostWrite = (props) => {
     }
   };
 
-  const onClickButton = () => {
-    if (title === "") {
-      window.alert("타이틀이 입력되지 않았습니다.");
-    } else if (address === "") {
-      window.alert("주소가 입력되지 않았습니다.");
-    } else if (location === "") {
-      window.alert("상세주소가 입력되지 않았습니다.");
-    } else if (time === "") {
-      window.alert("일정이 입력되지 않았습니다.");
-    } else if (content === "") {
-      window.alert("소개글이 입력되지 않았습니다.");
-    } else {
-      if (window.confirm("게시물을 작성하시겠습니까?")) {
-        dispatch(
-          postActions.addPost(title, address, location, time, content, history)
-        );
-      }
+  const onSubmit = (e) => {
+    e.preventDefault();
+    // if (title === "") {
+    //   window.alert("타이틀이 입력되지 않았습니다.");
+    // } else if (address === "") {
+    //   window.alert("주소가 입력되지 않았습니다.");
+    // } else if (location === "") {
+    //   window.alert("상세주소가 입력되지 않았습니다.");
+    // } else if (time === "") {
+    //   window.alert("일정이 입력되지 않았습니다.");
+    // } else if (content === "") {
+    //   window.alert("소개글이 입력되지 않았습니다.");
+    // } else {
+    if (window.confirm("게시물을 작성하시겠습니까?")) {
+      dispatch(
+        postActions.addPost(
+          title,
+          address,
+          location,
+          time,
+          content,
+          file,
+          history
+        )
+      );
     }
+    // }
   };
 
   const processImage = (e) => {
     const imageFile = e.target.files[0];
+    setFile(imageFile);
     const imageUrl = URL.createObjectURL(imageFile);
     setFileUrl(imageUrl);
   };
@@ -74,7 +85,7 @@ const PostWrite = (props) => {
     <Body>
       <ModalOverlay visible={true} />
       <ModalWrapper tabIndex="-1" visible={true}>
-        <Posts tabIndex="0">
+        <Posts tabIndex="0" onSubmit={onSubmit}>
           <Notice>
             게시물 작성
             <GoBack onClick={() => history.goBack()} />
@@ -94,11 +105,12 @@ const PostWrite = (props) => {
               document.getElementById("file").click();
             }}
           />
+
           <Container>
             <Title>
               <Input
                 type="text"
-                required
+                // required
                 placeholder="* 타이틀을 적어주세요."
                 onChange={(e) => setTitle(e.target.value)}
                 maxLength="14"
@@ -118,6 +130,7 @@ const PostWrite = (props) => {
               onChange={(e) => {
                 setLocation(e.target.value);
               }}
+              // required
             />
             <NoticeText>
               일정 :{" "}
@@ -126,7 +139,7 @@ const PostWrite = (props) => {
                 onChange={(e) => {
                   setTime(e.target.value);
                 }}
-                required
+                // required
               />
             </NoticeText>
             <Line />
@@ -136,20 +149,20 @@ const PostWrite = (props) => {
                 placeholder="* 소개글을 적어주세요. (40자이내)"
                 maxLength="40"
                 onChange={(e) => setContent(e.target.value)}
+                // required
               />
             </ContentContainer>
             <Warning>
               * 게시물에 욕설 및 비방을 포함하거나 게시물의 악용 시 삭제 조치 및
               서비스 이용에 제한이 있을 수 있습니다.
             </Warning>
-            <Participation onClick={onClickButton}>작성 완료</Participation>
+            <Participation type="submit">작성 완료</Participation>
           </Container>
         </Posts>
       </ModalWrapper>
     </Body>
   );
 };
-const FileInput = styled.input``;
 const ModalWrapper = styled.div`
   box-sizing: border-box;
   display: ${(props) => (props.visible ? "block" : "none")};
@@ -185,7 +198,7 @@ const Body = styled.div`
   max-width: 1200px;
 `;
 
-const Posts = styled.div`
+const Posts = styled.form`
   background-color: #fff;
   box-sizing: border-box;
   position: relative;
@@ -291,7 +304,7 @@ const InputLocation = styled.input`
   }
 `;
 
-const InputContent = styled.textarea.attrs({ required: true })`
+const InputContent = styled.textarea`
   width: 100%;
   border: none;
   font-size: 17px;
