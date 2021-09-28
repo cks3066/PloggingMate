@@ -31,6 +31,8 @@ public class Post extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private Status status;
 
+    private String information;
+
     private String contents;
 
     private LocalDateTime reservedAt;
@@ -42,6 +44,8 @@ public class Post extends BaseTimeEntity {
     private Integer totalApplyCount;
 
     private String parkName;
+
+    private String thumbnail;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "accountId")
@@ -65,7 +69,9 @@ public class Post extends BaseTimeEntity {
         this.reservedAt = createPostReq.getReservedAt();
         this.applyCount = 0;
         this.totalApplyCount = createPostReq.getTotalApplyCount();
+        this.information = createPostReq.getInformation();
         this.account = account;
+        this.thumbnail = createPostReq.getThumbnail();
         this.park = park;
         this.parkName = park.getName();
         this.address = park.getAddress();
@@ -77,6 +83,8 @@ public class Post extends BaseTimeEntity {
         this.reservedAt = createPostReq.getReservedAt();
         this.applyCount = 0;
         this.totalApplyCount = createPostReq.getTotalApplyCount();
+        this.information = createPostReq.getInformation();
+        this.thumbnail = createPostReq.getThumbnail();
         this.account = account;
         this.park = null;
         this.parkName = createPostReq.getName();

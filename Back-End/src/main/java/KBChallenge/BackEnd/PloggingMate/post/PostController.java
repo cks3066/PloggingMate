@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -37,10 +38,10 @@ public class PostController {
     }
 
     @PostMapping(value = "/posts")
-    public DataResponse<Long> createPost(@Valid @RequestBody CreatePostReq createPostReq, Errors errors,
-                                                     @AuthenticationPrincipal CustomUserDetails customUserDetails) {
+    public DataResponse<Long> createPost(@RequestPart(value = "file", required = false) MultipartFile file, @Valid @RequestBody CreatePostReq createPostReq, Errors errors,
+                                         @AuthenticationPrincipal CustomUserDetails customUserDetails) {
         if (errors.hasErrors()) ValidationExceptionProvider.throwValidError(errors);
-        Long postId = postService.createPost(createPostReq, customUserDetails);
+        Long postId = postService.createPost(file, createPostReq, customUserDetails);
         return responseService.getDataResponse(postId);
     }
 

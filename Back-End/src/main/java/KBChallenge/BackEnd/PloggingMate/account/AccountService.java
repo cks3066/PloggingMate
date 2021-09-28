@@ -8,6 +8,8 @@ import KBChallenge.BackEnd.PloggingMate.configure.response.exception.CustomExcep
 import KBChallenge.BackEnd.PloggingMate.configure.response.exception.CustomExceptionStatus;
 import KBChallenge.BackEnd.PloggingMate.configure.security.authentication.CustomUserDetails;
 import KBChallenge.BackEnd.PloggingMate.configure.security.jwt.JwtTokenProvider;
+import KBChallenge.BackEnd.PloggingMate.post.dto.PostListRes;
+import KBChallenge.BackEnd.PloggingMate.post.repository.PostRepository;
 import KBChallenge.BackEnd.PloggingMate.util.uploader.FirebaseFileService;
 import KBChallenge.BackEnd.PloggingMate.util.location.NaverGeocode;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +35,7 @@ public class AccountService {
     private final JwtTokenProvider jwtTokenProvider;
     private final NaverGeocode naverGeocode;
     private final FirebaseFileService fileService;
+    private final PostRepository postRepository;
 
     @Transactional
     public AccountAuthDto signUp(AccountAuthDto dto) {
@@ -89,5 +92,19 @@ public class AccountService {
         account.changeProfileImage(profileUri);
 
         return profileUri;
+    }
+
+    public List<PostListRes> getPostsByAuth(Long accountId) {
+        Account account = accountRepository.findByAccountIdAndStatus(accountId, VALID)
+                .orElseThrow(() -> new CustomException(CustomExceptionStatus.ACCOUNT_NOT_FOUND));
+        List<PostListRes> list = postRepository.getPostsByAccount(account);
+        return list;
+    }
+
+    @Transactional
+    public void patchAuthProfileImage(MultipartFile file, CustomUserDetails customUserDetails) {
+        Account account = accountRepository.findByEmailAndStatus(customUserDetails.getAccount().getEmail(), VALID)
+                .orElseThrow(() -> new CustomException(CustomExceptionStatus.ACCOUNT_NOT_FOUND));
+        account.changeProfileImage(fileService.upload(file));
     }
 }

@@ -14,9 +14,11 @@ import KBChallenge.BackEnd.PloggingMate.post.entity.Post;
 import KBChallenge.BackEnd.PloggingMate.post.repository.AccountPostRelationRepository;
 import KBChallenge.BackEnd.PloggingMate.post.repository.PostRepository;
 import KBChallenge.BackEnd.PloggingMate.util.location.NaverGeocode;
+import KBChallenge.BackEnd.PloggingMate.util.uploader.FirebaseFileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +36,7 @@ public class PostService {
     private final AccountPostRelationRepository accountPostRelationRepository;
     private final ParkRepository parkRepository;
     private final AccountRepository accountRepository;
+    private final FirebaseFileService fileService;
 
     @Transactional(readOnly = true)
     public List<List<PostListRes>> getPostList(CustomUserDetails customUserDetails) {
@@ -83,8 +86,9 @@ public class PostService {
 
     }
 
-    public Long createPost(CreatePostReq createPostReq, CustomUserDetails customUserDetails) {
+    public Long createPost(MultipartFile file, CreatePostReq createPostReq, CustomUserDetails customUserDetails) {
         Account account = customUserDetails.getAccount();
+        createPostReq.setThumbnail(fileService.upload(file));
         if (createPostReq.getParkId() != null) {
             Park park = parkRepository.findByParkIdAndStatus(createPostReq.getParkId(), VALID)
                     .orElseThrow(() -> new CustomException(CustomExceptionStatus.PARK_NOT_FOUND));
