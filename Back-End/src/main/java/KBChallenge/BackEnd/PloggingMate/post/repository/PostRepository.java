@@ -1,5 +1,6 @@
 package KBChallenge.BackEnd.PloggingMate.post.repository;
 
+import KBChallenge.BackEnd.PloggingMate.account.entity.Account;
 import KBChallenge.BackEnd.PloggingMate.configure.entity.Status;
 import KBChallenge.BackEnd.PloggingMate.post.dto.PostListRes;
 import KBChallenge.BackEnd.PloggingMate.post.entity.Post;
@@ -30,6 +31,14 @@ public interface PostRepository extends JpaRepository<Post, Long> {
                     "ORDER BY p.reservedAt DESC"
     )
     List<PostListRes> getNoAuthPostListNotAvailable();
+
+    @Query(
+            "SELECT p FROM Post p " +
+                    "JOIN  FETCH p.applicants ap " +
+                    "JOIN FETCH  ap.account a " +
+                    "WHERE ( p.status = 'VALID' AND ap.isLike = true AND p.reservedAt > CURRENT_DATE() ) "
+    )
+    List<PostListRes> getPostsByAccount(Account account);
 
     Optional<Post> findByStatusAndPostId(Status status, Long postId);
 

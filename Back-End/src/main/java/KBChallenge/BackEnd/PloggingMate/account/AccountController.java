@@ -3,9 +3,11 @@ package KBChallenge.BackEnd.PloggingMate.account;
 import KBChallenge.BackEnd.PloggingMate.account.dto.AccountAuthDto;
 import KBChallenge.BackEnd.PloggingMate.account.dto.SignInReq;
 import KBChallenge.BackEnd.PloggingMate.account.dto.SignInRes;
+import KBChallenge.BackEnd.PloggingMate.configure.response.CommonResponse;
 import KBChallenge.BackEnd.PloggingMate.configure.response.DataResponse;
 import KBChallenge.BackEnd.PloggingMate.configure.response.ResponseService;
 import KBChallenge.BackEnd.PloggingMate.configure.security.authentication.CustomUserDetails;
+import KBChallenge.BackEnd.PloggingMate.post.dto.PostListRes;
 import KBChallenge.BackEnd.PloggingMate.util.ValidationExceptionProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -50,6 +52,19 @@ public class AccountController {
     @PatchMapping(value = "/accounts/profile")
     public DataResponse<?> changeMyProfile(@RequestPart("file") MultipartFile file, @AuthenticationPrincipal CustomUserDetails customUserDetails) {
         return responseService.getDataResponse(accountService.changeMyProfile(file, customUserDetails));
+    }
+
+    @GetMapping(value = "/accounts/{accountId}/posts")
+    public DataResponse<List<PostListRes>> getPostsByAuth(@PathVariable(name = "accountId") Long accountId) {
+        List<PostListRes> list = accountService.getPostsByAuth(accountId);
+        return responseService.getDataResponse(list);
+    }
+
+    @PatchMapping(value = "/accounts/auth/profileImage")
+    public CommonResponse patchAuthProfileImage(@RequestPart(value = "file") MultipartFile file,
+                                                @AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        accountService.patchAuthProfileImage(file, customUserDetails);
+        return responseService.getSuccessResponse();
     }
 
 }

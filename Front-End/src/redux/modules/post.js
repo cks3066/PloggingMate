@@ -119,6 +119,7 @@ export default createReducer(initialState, {
   },
   [LOADING]: (state, action) => {
     state.is_loading = action.payload;
+    console.log(state.is_loading);
   },
 });
 

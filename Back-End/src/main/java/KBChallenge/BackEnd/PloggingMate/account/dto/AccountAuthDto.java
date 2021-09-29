@@ -36,6 +36,10 @@ public class AccountAuthDto {
     @Length(min=8, max= 50)
     private String password;
 
+    private int participationCount;
+
+    private String profileImage;
+
     @NotBlank
     @Pattern(regexp = "^[가-힣a-zA-Z0-9\\s_-]*$")
     private String address;
@@ -50,6 +54,8 @@ public class AccountAuthDto {
         this.email = account.getEmail();
         this.nickname = account.getNickname();
         this.address = account.getAddress();
+        this.participationCount = account.getParticipationCount();
+        this.profileImage = account.getProfileImage();
     }
 
 }
