@@ -53,7 +53,6 @@ const Post = (props) => {
           </Date>
         </div>
       </Link>
-      <UserName>포스트에 등록된 작성자 아이디</UserName>
     </PostBody>
   );
 };

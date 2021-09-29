@@ -22,7 +22,6 @@ const PostList = (props) => {
 
   React.useEffect(() => {
     dispatch(postActions.getPost());
-
     if (init) {
       if (posts.length < 12) {
         setShowNum(posts.length);

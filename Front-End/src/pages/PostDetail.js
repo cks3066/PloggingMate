@@ -13,29 +13,36 @@ const PostDetail = (props) => {
   const { date } = props.location.state;
   const { is_progress } = props.location.state;
   const { user } = useSelector((state) => state.user);
+  const is_login = useSelector((state) => state.user.is_login);
   const [modalVisible, setModalVisible] = React.useState(true);
   const url = `https://source.unsplash.com/random/${post.postId}`;
-  const [count, setCount] = React.useState(post.applyCount);
-  const [userList, setUserList] = React.useState(post.accounts);
   const applied =
     post.accounts.filter((item) => item.accountId === user.uid).length !== 0
       ? true
       : false;
-  const openModal = () => {
-    setModalVisible(true);
-  };
   const closeModal = () => {
     setModalVisible(false);
     history.goBack();
   };
+  console.log(post);
   const onClick = () => {
-    if (!applied) {
-      if (window.confirm("플로깅에 참여하시겠습니까?")) {
-        dispatch(postActions.applyPost(post.postId));
+    if (is_login) {
+      if (!applied) {
+        if (window.confirm("플로깅에 참여하시겠습니까?")) {
+          dispatch(postActions.applyPost(post.postId));
+          dispatch(postActions.getPost());
+          history.push("/");
+        }
+      } else {
+        if (window.confirm("플로깅 참여를 취소하시겠습니까?")) {
+          dispatch(postActions.applyPost(post.postId));
+          dispatch(postActions.getPost());
+          history.push("/");
+        }
       }
     } else {
-      if (window.confirm("플로깅 참여를 취소하시겠습니까?")) {
-        dispatch(postActions.applyPost(post.postId));
+      if (window.confirm("플로깅 참여를 위해선 로그인이 필요합니다.")) {
+        history.push("/login");
       }
     }
   };

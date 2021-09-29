@@ -6,11 +6,13 @@ import "../scss/Navbar.scss";
 import { withRouter } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as userActions } from "../redux/modules/user";
+import { actionCreators as postActions } from "../redux/modules/post";
 
 function Navbar({ history }) {
   const dispatch = useDispatch();
   const isLogin = useSelector((state) => state.user.is_login);
 
+  dispatch(postActions.getPost());
   return (
     <>
       <NormalNav>

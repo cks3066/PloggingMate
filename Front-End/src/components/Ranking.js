@@ -7,19 +7,6 @@ import {
 } from "@ant-design/icons";
 import axios from "axios";
 
-const dummy = [
-  { rank: 1, id: "on_schan", count: 17 },
-  { rank: 2, id: "abcMart", count: 15 },
-  { rank: 3, id: "addidas", count: 14 },
-  { rank: 4, id: "nike12", count: 11 },
-  { rank: 5, id: "puma345", count: 9 },
-  { rank: 5, id: "newbale", count: 9 },
-  { rank: 7, id: "amigo", count: 7 },
-  { rank: 8, id: "lightlit", count: 5 },
-  { rank: 9, id: "abcasdz", count: 4 },
-  { rank: 10, id: "hellowoman", count: 2 },
-];
-
 const Ranking = (props) => {
   const [toggle, setToggle] = React.useState(true);
   let rankButton;
@@ -57,6 +44,7 @@ const Ranking = (props) => {
           </Rank>
           <ID>{item.nickname}</ID>
           <Count>{item.count}</Count>
+          <Count>0</Count>
         </Elem>
       );
     });
@@ -67,6 +55,7 @@ const Ranking = (props) => {
     axios
       .get("http://localhost:8080/app/accounts/rankings", {})
       .then((res) => {
+        console.log(res.data.result);
         setRank(res.data.result);
       })
       .catch((error) => {
