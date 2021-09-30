@@ -81,6 +81,7 @@ const PostWrite = (props) => {
     const imageUrl = URL.createObjectURL(imageFile);
     setFileUrl(imageUrl);
   };
+
   return (
     <Body>
       <ModalOverlay visible={true} />
@@ -126,6 +127,7 @@ const PostWrite = (props) => {
             <InputLocation
               placeholder="* 상세 위치 ex) ○○공원"
               maxLength="14"
+              value={location === "" ? "" : location}
               onChange={(e) => {
                 setLocation(e.target.value);
               }}

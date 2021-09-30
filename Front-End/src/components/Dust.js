@@ -101,7 +101,6 @@ const Dust = (props) => {
         .get(dustURL)
         .then((res) => {
           setDustData(res.data.result);
-          console.log("data", res.data.result);
           setIsLoading(false);
         })
         .catch((error) => {

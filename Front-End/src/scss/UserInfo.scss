@@ -8,7 +8,8 @@ $color-main: #3fc556;
   transition: 0.2s;
   cursor: pointer;
   &.btn-change,
-  &.btn-modify {
+  &.btn-modify,
+  &.btn-postlist {
     background-color: $color-main;
     color: #fff;
 
@@ -18,13 +19,18 @@ $color-main: #3fc556;
   }
 
   &.btn-myplogging {
-    border: 1px solid #d3d3d3;
+    border: 1px solid hsl(0, 0%, 83%);
     background-color: #fff;
 
     &:hover {
       background-color: #d3d3d3;
     }
   }
+}
+
+.link {
+  text-decoration: none;
+  color: #000;
 }
 
 .modal-container {
@@ -63,11 +69,10 @@ $color-main: #3fc556;
       .btn-container {
         display: flex;
         flex-direction: column;
+      }
 
-        .link {
-          text-decoration: none;
-          color: #000;
-        }
+      input {
+        display: none;
       }
     }
 

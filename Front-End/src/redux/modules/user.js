@@ -1,5 +1,6 @@
 import { createAction, createReducer } from "@reduxjs/toolkit";
 import axios from "axios";
+import logo from "../../img/logo.png";
 
 const initialState = {
   is_login: false,
@@ -9,6 +10,8 @@ const initialState = {
     email: "",
     address: "",
     nickname: "",
+    participationCount: 0,
+    ploggingList: [],
   },
 };
 
@@ -16,11 +19,13 @@ const initialState = {
 const LOG_OUT = "user/LOG_OUT";
 const SET_USER = "user/SET_USER";
 const SET_LOGIN = "user/SET_LOGIN";
+const SET_PLOGGING_LIST = "user/SET_PLOGGING_LIST";
 
 // 액션 크리에이터
 const logOut = createAction(LOG_OUT);
 const setUser = createAction(SET_USER);
 const setLogin = createAction(SET_LOGIN);
+const setPloggingLst = createAction(SET_PLOGGING_LIST);
 
 // thunk middleware- 함수형 액션
 const login = (id, pwd, history) => {
@@ -46,6 +51,7 @@ const login = (id, pwd, history) => {
           })
           .then((res) => {
             dispatch(setUser(res.data.result));
+            console.log(res.data.result);
           })
           .catch((error) => {
             console.log(error);
@@ -82,6 +88,19 @@ const signup = (id, nickname, pwd, address, history) => {
   };
 };
 
+const getMyPost = (id) => {
+  return function (dispatch, getState) {
+    axios
+      .get(`http://localhost:8080/app/accounts/${id}/posts`)
+      .then((res) => {
+        dispatch(setPloggingLst(res.data.result));
+      })
+      .catch((e) => {
+        throw new Error(e);
+      });
+  };
+};
+
 // 리듀서
 export default createReducer(initialState, {
   [SET_LOGIN]: (state, action) => {
@@ -94,6 +113,8 @@ export default createReducer(initialState, {
     state.user.email = userData.email;
     state.user.address = userData.address;
     state.user.nickname = userData.nickname;
+    state.user.profileImage = userData.profileImage;
+    state.user.participationCount = userData.participationCount;
   },
   [LOG_OUT]: (state, action) => {
     state.is_login = false;
@@ -105,6 +126,9 @@ export default createReducer(initialState, {
       nickname: "",
     };
   },
+  [SET_PLOGGING_LIST]: (state, action) => {
+    state.user.ploggingList = action.payload;
+  },
 });
 
 // 디스패치용 액션크리에이터
@@ -112,6 +136,7 @@ const actionCreators = {
   login,
   signup,
   logOut,
+  getMyPost,
 };
 
 export { actionCreators };

@@ -9,6 +9,7 @@ import { actionCreators as postActions } from "../redux/modules/post";
 const PostDetail = (props) => {
   const history = useHistory();
   const dispatch = useDispatch();
+  console.log("Props", props);
   const { post } = props.location.state;
   const { date } = props.location.state;
   const { is_progress } = props.location.state;

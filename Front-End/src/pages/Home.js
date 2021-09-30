@@ -29,9 +29,6 @@ const Home = () => {
     const url = `${API_AUTH}?consumer_key=${CONSUMER_KEY}&consumer_secret=${CONSUMER_SECRET}`;
 
     navigator.geolocation.getCurrentPosition((position) => {
-      console.log(position.coords);
-      console.log("Latitude is :", position.coords.latitude);
-      console.log("Longitude is :", position.coords.longitude);
       axios
         .get(
           `https://dapi.kakao.com/v2/local/geo/coord2address.json?x=${position.coords.longitude}&y=${position.coords.latitude}&input_coord=WGS84`,
