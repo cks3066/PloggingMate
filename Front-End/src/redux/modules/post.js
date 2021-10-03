@@ -61,38 +61,16 @@ const applyPost = (postId) => {
 
 const addPost = (title, address, location, time, content, file, history) => {
   return function (dispatch, getState) {
-    // axios
-    //   .post(
-    //     `http://localhost:8080/app/posts/`,
-    //     {
-    //       contents: title,
-    //       reservedAt: time,
-    //       totalApplyCount: 5,
-    //       name: location,
-    //       address: address,
-    //     },
-    //     {
-    //       headers: {
-    //         "X-ACCESS-TOKEN": getState().user.jwt,
-    //       },
-    //     }
-    //   )
-    //   .then((res) => {
-    //     console.log(res);
-    //     dispatch(getPost());
-    //   })
-    //   .catch((error) => {
-    //     console.dir(error);
-    //   });
-
     axios
       .post(
         `http://localhost:8080/app/posts/`,
         {
           contents: title,
           reservedAt: time,
-          parkId: 1,
           totalApplyCount: 5,
+          name: location,
+          address: address,
+          information: content,
         },
         {
           headers: {

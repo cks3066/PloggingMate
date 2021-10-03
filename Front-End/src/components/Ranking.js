@@ -26,27 +26,29 @@ const Ranking = (props) => {
   const rendering = () => {
     const result = [];
     rank.map((item, index) => {
-      result.push(
-        <Elem key={index}>
-          <Rank>
-            {index === 0 ? (
-              <>
-                <CrownFilled
-                  style={{
-                    fontSize: "20px",
-                    color: "#FFC312",
-                  }}
-                />
-              </>
-            ) : (
-              <> {index + 1}등</>
-            )}
-          </Rank>
-          <ID>{item.nickname}</ID>
-          <Count>{item.count}</Count>
-          <Count>0</Count>
-        </Elem>
-      );
+      if (index < 10) {
+        result.push(
+          <Elem key={index}>
+            <Rank>
+              {index === 0 ? (
+                <>
+                  <CrownFilled
+                    style={{
+                      fontSize: "20px",
+                      color: "#FFC312",
+                    }}
+                  />
+                </>
+              ) : (
+                <> {index + 1}등</>
+              )}
+            </Rank>
+            <ID>{item.nickname}</ID>
+            <Count>{item.count}</Count>
+            <Count>0</Count>
+          </Elem>
+        );
+      }
     });
     return result;
   };
