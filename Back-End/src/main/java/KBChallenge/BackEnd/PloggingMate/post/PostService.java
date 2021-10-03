@@ -88,7 +88,9 @@ public class PostService {
 
     public Long createPost(MultipartFile file, CreatePostReq createPostReq, CustomUserDetails customUserDetails) {
         Account account = customUserDetails.getAccount();
-        createPostReq.setThumbnail(fileService.upload(file));
+        if (file != null) {
+            createPostReq.setThumbnail(fileService.upload(file));
+        }
         if (createPostReq.getParkId() != null) {
             Park park = parkRepository.findByParkIdAndStatus(createPostReq.getParkId(), VALID)
                     .orElseThrow(() -> new CustomException(CustomExceptionStatus.PARK_NOT_FOUND));

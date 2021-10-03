@@ -73,7 +73,7 @@ public enum CustomExceptionStatus {
 
     // Post
     POST_NOT_FOUND(false, 3040, "게시물을 찾을 수 없습니다."),
-    POST_OVER_APPLICANT(false, 3040, "게시물을 찾을 수 없습니다."),
+    POST_OVER_APPLICANT(false, 3040, "게시물의 모집 인원을 초과했습니다."),
 
 
 

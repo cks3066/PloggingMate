@@ -59,9 +59,11 @@ public class PostListRes implements Comparable<PostListRes>{
         this.address = post.getAddress();
         this.applyCount = post.getApplyCount();
         this.information = post.getInformation();
-        this.parkId = post.getPark().getParkId();
+        if (post.getPark() != null) {
+            this.parkId = post.getPark().getParkId();
+            this.parkName = post.getPark().getName();
+        }
         this.thumbnail = post.getThumbnail();
-        this.parkName = post.getPark().getName();
         this.accounts = post.getApplicants().stream().filter(AccountPostRelation::getIsLike).map(ApplicantRes::new).collect(Collectors.toList());
         this.creatorAccountId = post.getAccount().getAccountId();
         this.creatorNickname = post.getAccount().getNickname();
