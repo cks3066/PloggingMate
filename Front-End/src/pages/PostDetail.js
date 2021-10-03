@@ -80,7 +80,7 @@ const PostDetail = (props) => {
               {date.minute}분
             </Notice>
             <Line />
-            <Content>포스트에 들어있는 세부정보 넣기</Content>
+            <Content>{post.information}</Content>
             <Line />
             <Notice participant>
               <NoticeInner>참여자</NoticeInner>

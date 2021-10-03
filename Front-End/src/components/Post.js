@@ -47,12 +47,13 @@ const Post = (props) => {
         )}
         <Content> {post.contents}</Content>
         <div>
-          <Date>{post.parkName} </Date>
+          <Date>{post.parkName === null ? post.address : post.parkName} </Date>
           <Date>
             {date.month}월 {date.day}일 {date.hour}시 {date.minute}분
           </Date>
         </div>
       </Link>
+      <UserName>{post.creatorNickname}</UserName>
     </PostBody>
   );
 };
