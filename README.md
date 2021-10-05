@@ -85,6 +85,7 @@ $ ./gradlew clean build
 
 ```sh
 $ cd Front-End
+$ yarn install
 $ npm run start
 ```
 
