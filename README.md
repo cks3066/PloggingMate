@@ -44,7 +44,7 @@
 
 </div>
 
-## 설명 영상 링크
+## 시연 영상 링크
 
  https://youtu.be/Qz9JinI_Id8
 
