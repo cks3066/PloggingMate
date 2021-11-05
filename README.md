@@ -41,7 +41,8 @@
 
 공원 검색 결과 지도 마커 클릭 시 세부 정보 제공 및 게시물 작성
   
-  https://youtu.be/Qz9JinI_Id8
+  <video src="https://youtu.be/Qz9JinI_Id8" controls>
+    </video>
 </div>
 
 ## 기술스택
