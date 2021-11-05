@@ -41,8 +41,7 @@
 
 공원 검색 결과 지도 마커 클릭 시 세부 정보 제공 및 게시물 작성
   
-  <video src="https://youtu.be/Qz9JinI_Id8" controls>
-    </video>
+ <iframe width="560" height="315" src="https://www.youtube.com/embed/iDjQSdN_ig8" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </div>
 
 ## 기술스택
